@@ -2,7 +2,7 @@ import pygame
 from __init__ import settings
 
 
-def keyController(pressed_keys: pygame.key.ScancodeWrapper):
+def keyController(pressed_keys: pygame.key.ScancodeWrapper, **kwargs):
     '''
     Параметры:
 
@@ -15,7 +15,9 @@ def keyController(pressed_keys: pygame.key.ScancodeWrapper):
     key_controls = settings["key_controls"]
 
     move_direction = [0,0]
-    change_resolution = None
+    scale = kwargs["scale"]
+    scale_timer = kwargs["scale_timer"]
+    scale_timer += kwargs["tick_time"]
 
     if pressed_keys[key_controls["move_up"]]:
         move_direction[1] -= 1
@@ -30,4 +32,13 @@ def keyController(pressed_keys: pygame.key.ScancodeWrapper):
         pygame.display.toggle_fullscreen()
         settings["window"]["resolution"] = list(pygame.display.get_window_size())
 
-    return move_direction
+    if pressed_keys[key_controls["scale_up"]]:
+        if scale < 2 and scale_timer > 30:
+            scale += 0.02
+            scale_timer = 0
+    if pressed_keys[key_controls["scale_down"]]:
+        if scale > 0.2 and scale_timer > 30: 
+            scale -= 0.02
+            scale_timer = 0
+
+    return move_direction, scale, scale_timer

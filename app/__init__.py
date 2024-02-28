@@ -1,12 +1,12 @@
 import pygame
-import tools.load_tools as load_tools
-from objects.sprites import testSprite, Sprite, Group
-
+from tools.load_tools import loadJson
+from objects.sprites import Entity, Sprite, Group
 from random import randint
 
-SCALE = 1.0
+scale = 1.0
+scale_timer = 0
 
-settings = load_tools.loadJson("data/settings.json") # словарь содержащий текущие настройки
+settings = loadJson("data/settings.json") # словарь содержащий текущие настройки
 
 window = pygame.display.set_mode(settings["window"]["resolution"]) # главная поверхность
 pygame.display.set_caption(settings["window"]["caption"])
@@ -21,12 +21,11 @@ observer = None
 # TEST.SPRITES
 
 sprites = Group()
-test_group = Group()
 
-test_sprite_texture = pygame.Surface((70,50))
-test_sprite_texture2 = pygame.Surface((30,60))
-test_sprite_texture.fill((255,255,255))
-test_sprite_texture2.fill((255,255,255))
+player_texture = pygame.Surface((70,50))
+obstacle_texture = pygame.Surface((30,60))
+player_texture.fill((255,255,255))
+obstacle_texture.fill((255,255,255))
 
 border_horizontal_texture = pygame.Surface((settings["window"]["resolution"][0], 50))
 border_vertical_texture = pygame.Surface((50, settings["window"]["resolution"][1]))
@@ -38,17 +37,17 @@ border_bottom = Sprite(border_horizontal_texture, (settings["window"]["resolutio
 border_left = Sprite(border_vertical_texture, (0, settings["window"]["resolution"][1] // 2), sprites)
 border_right = Sprite(border_vertical_texture, (settings["window"]["resolution"][0], settings["window"]["resolution"][1] // 2), sprites)
 
-test_sprite = testSprite(test_sprite_texture,
+player = Entity(player_texture,
                          (randint(25, settings["window"]["resolution"][0] - 25), randint(25, settings["window"]["resolution"][1] - 25)),
-                         sprites, test_group,
+                         sprites,
                          maxacceleration=5000,
                          maxspeed=700)
 
-test_sprite2 = Sprite(test_sprite_texture2,
+obstacle = Sprite(obstacle_texture,
                       (randint(25, settings["window"]["resolution"][0] - 25), randint(25, settings["window"]["resolution"][1] - 25)),
                       sprites)
 
-observer = test_sprite
+observer = player
 
 # TEST.DEBUG_PANEL
 

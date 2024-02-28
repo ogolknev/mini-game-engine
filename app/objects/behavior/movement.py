@@ -2,7 +2,7 @@ import pygame
 import sys
 import os
 sys.path.insert(1, os.path.abspath(__file__) + "/../../..")
-from tools.math_tools import sign, sign_filter
+from tools.math_tools import sign, signFilter
 
 def standartMovement(sprite: pygame.sprite.Sprite, **kwargs):
 
@@ -53,8 +53,8 @@ def pathInterpole(sprite: pygame.sprite.Sprite, pathx, pathy):
         if collisions:
             collideHandle(sprite, collisions)
 
-        stepx = sign_filter(stepx, sprite.move_block[0])
-        stepy = sign_filter(stepy, sprite.move_block[1])
+        stepx = signFilter(stepx, sprite.move_block[0])
+        stepy = signFilter(stepy, sprite.move_block[1])
 
         if stepx or stepy:
 

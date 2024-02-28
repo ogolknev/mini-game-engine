@@ -3,7 +3,7 @@
 def sign(n):
     return abs(n)/n
 
-def sign_filter(n, sign):
+def signFilter(n, sign):
     if sign > 0:
         if n > 0:
             return n

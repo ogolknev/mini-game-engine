@@ -12,6 +12,9 @@
         "move_down": 115,
         "move_right": 100,
 
-        "fullscreen": 1073741892
+        "fullscreen": 1073741892,
+
+        "scale_up": 61,
+        "scale_down": 45
     }
 }
