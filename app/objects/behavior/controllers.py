@@ -1,5 +1,8 @@
 import pygame
-from __init__ import settings
+import sys
+import os
+sys.path.insert(1, os.path.abspath(__file__) + "/../../../..")
+from app import settings
 
 
 def keyController(pressed_keys: pygame.key.ScancodeWrapper, **kwargs):

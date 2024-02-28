@@ -1,6 +1,6 @@
 import pygame
 from __init__ import window, run, sprites, settings, clock, font, scale, scale_timer, observer
-from key_controls import keyController
+from objects.behavior.controllers import keyController
 
 
 # главный цикл
