@@ -1,35 +1,18 @@
 import pygame
+from random import randint
 import sys
 import os
 sys.path.insert(1, os.path.abspath(__file__) + "/../../../..")
-from app import settings
 
 
-def keyController(pressed_keys: pygame.key.ScancodeWrapper, **kwargs):
+def appKeyController(pressed_keys: pygame.key.ScancodeWrapper, **kwargs):
     '''
-    Параметры:
-
-    - key_controls - словарь с текущими настройками управления
-    - pressed_keys - список состаяния всех кнопок
-    
-    Возвращает направление в котором должен двигаться управляемый объект
     '''
-
+    settings = kwargs["settings"]
     key_controls = settings["key_controls"]
-
-    move_direction = [0,0]
     scale = kwargs["scale"]
     scale_timer = kwargs["scale_timer"]
     scale_timer += kwargs["tick_time"]
-
-    if pressed_keys[key_controls["move_up"]]:
-        move_direction[1] -= 1
-    if pressed_keys[key_controls["move_left"]]:
-        move_direction[0] -= 1
-    if pressed_keys[key_controls["move_down"]]:
-        move_direction[1] += 1
-    if pressed_keys[key_controls["move_right"]]:
-        move_direction[0] += 1
 
     if pressed_keys[key_controls["fullscreen"]]:
         pygame.display.toggle_fullscreen()
@@ -44,4 +27,43 @@ def keyController(pressed_keys: pygame.key.ScancodeWrapper, **kwargs):
             scale -= 0.02
             scale_timer = 0
 
-    return move_direction, scale, scale_timer
+    return settings, scale, scale_timer
+
+
+def gameKeyController(**kwargs):
+
+    settings = kwargs["settings"]
+    pressed_keys = kwargs["pressed_keys"]
+    key_controls = settings["key_controls"]
+    move_direction = [0,0]
+
+    if pressed_keys[key_controls["move_up"]]:
+        move_direction[1] -= 1
+    if pressed_keys[key_controls["move_left"]]:
+        move_direction[0] -= 1
+    if pressed_keys[key_controls["move_down"]]:
+        move_direction[1] += 1
+    if pressed_keys[key_controls["move_right"]]:
+        move_direction[0] += 1
+
+    return move_direction
+
+
+def gameRandController(**kwargs):
+
+    sprite = kwargs["sprite"]
+
+    if "rand_move_timer" in sprite.kwattrs:
+        sprite.kwattrs["rand_move_timer"] += sprite._clock.get_time()
+        if sprite.kwattrs["rand_move_timer"] > randint(200, 3000):
+            print("direction changed")
+            sprite.kwattrs["direction"] = [randint(-1, 1), randint(-1, 1)]
+            sprite.kwattrs["rand_move_timer"] = 0
+        else:
+            return sprite.kwattrs["direction"]
+    else:
+        sprite.kwattrs.update({"rand_move_timer": 0})
+        sprite.kwattrs.update({"direction": [0,0]})
+
+    return sprite.kwattrs["direction"]
+

@@ -95,9 +95,11 @@ class Sprite(pygame.sprite.Sprite):
 
 class Entity(Sprite):
 
-    def __init__(self, texture: pygame.Surface, position: tuple, *groups, **kwargs) -> None:
+    def __init__(self, texture: pygame.Surface, position: tuple, controller, *groups, **kwargs) -> None:
 
         super().__init__(texture, position, *groups)
+
+        self.controller = controller
 
         self.speed = [0,0]
         self.move_block = [0,0]

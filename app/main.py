@@ -1,7 +1,5 @@
 import pygame
-from __init__ import window, run, sprites, settings, clock, font, scale, scale_timer, observer
-from objects.behavior.controllers import keyController
-
+from __init__ import window, run, sprites, settings, clock, font, scale, scale_timer, observer, appKeyController
 
 # главный цикл
 while run:
@@ -16,14 +14,17 @@ while run:
 
     window.fill((0,0,0)) # цвет основной поверхности
 
-    move_direction, scale, scale_timer = keyController(pygame.key.get_pressed(),
-                                                       scale=scale,
-                                                       scale_timer=scale_timer,
-                                                       tick_time=clock.get_time())
+    pressed_keys = pygame.key.get_pressed()
+
+    settings, scale, scale_timer = appKeyController(settings=settings,
+                                                    pressed_keys=pressed_keys,
+                                                    scale=scale,
+                                                    scale_timer=scale_timer,
+                                                    tick_time=clock.get_time())
 
     sprites.update(settings=settings,
                    window=window,
-                   move_direction=move_direction) # обновление всех спрайтов
+                   pressed_keys=pressed_keys) # обновление всех спрайтов
 
     sprites.draw(settings=settings,
                  surface=window,

@@ -1,6 +1,7 @@
 import pygame
 from tools.load_tools import loadJson
 from objects.sprites import Entity, Sprite, Group
+from objects.behavior.controllers import gameKeyController, appKeyController, gameRandController
 from random import randint
 
 scale = 1.0
@@ -22,11 +23,6 @@ observer = None
 
 sprites = Group()
 
-player_texture = pygame.Surface((70,50))
-obstacle_texture = pygame.Surface((30,60))
-player_texture.fill((255,255,255))
-obstacle_texture.fill((255,255,255))
-
 border_horizontal_texture = pygame.Surface((settings["window"]["resolution"][0], 50))
 border_vertical_texture = pygame.Surface((50, settings["window"]["resolution"][1]))
 border_horizontal_texture.fill((255,255,255))
@@ -37,11 +33,24 @@ border_bottom = Sprite(border_horizontal_texture, (settings["window"]["resolutio
 border_left = Sprite(border_vertical_texture, (0, settings["window"]["resolution"][1] // 2), sprites)
 border_right = Sprite(border_vertical_texture, (settings["window"]["resolution"][0], settings["window"]["resolution"][1] // 2), sprites)
 
+player_texture = pygame.Surface((70,50))
+obstacle_texture = pygame.Surface((30,60))
+player_texture.fill((255,255,255))
+obstacle_texture.fill((255,255,255))
+
 player = Entity(player_texture,
-                         (randint(25, settings["window"]["resolution"][0] - 25), randint(25, settings["window"]["resolution"][1] - 25)),
-                         sprites,
-                         maxacceleration=5000,
-                         maxspeed=700)
+                (randint(25, settings["window"]["resolution"][0] - 25), randint(25, settings["window"]["resolution"][1] - 25)),
+                gameKeyController,
+                sprites,
+                maxacceleration=5000,
+                maxspeed=700)
+
+creature = Entity(player_texture,
+                  (randint(25, settings["window"]["resolution"][0] - 25), randint(25, settings["window"]["resolution"][1] - 25)),
+                  gameRandController,
+                  sprites,
+                  maxacceleration=8000,
+                  maxspeed=300)
 
 obstacle = Sprite(obstacle_texture,
                       (randint(25, settings["window"]["resolution"][0] - 25), randint(25, settings["window"]["resolution"][1] - 25)),

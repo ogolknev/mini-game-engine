@@ -16,7 +16,7 @@ def standartMovement(sprite: pygame.sprite.Sprite, **kwargs):
 
     maxacceleration = sprite.kwattrs["maxacceleration"]
     maxspeed = sprite.kwattrs["maxspeed"]
-    move_direction = kwargs["move_direction"]
+    move_direction = sprite.controller(**(kwargs | {"sprite": sprite}))
 
     time = sprite._clock.get_time() * 0.001
 
