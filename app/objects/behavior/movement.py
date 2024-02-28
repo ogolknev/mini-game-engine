@@ -2,7 +2,7 @@ import pygame
 import sys
 import os
 sys.path.insert(1, os.path.abspath(__file__) + "/../../..")
-from tools.math_tools import sign, signFilter
+from tools.math_tools import sign, blockFilter
 
 def standartMovement(sprite: pygame.sprite.Sprite, **kwargs):
 
@@ -33,6 +33,7 @@ def standartMovement(sprite: pygame.sprite.Sprite, **kwargs):
     else:
         sprite.speed[1] -= maxacceleration * sign(sprite.speed[1]) * time if abs(sprite.speed[1]) > maxacceleration * time else sprite.speed[1]
 
+    print(sprite, sprite.move_block)
     sprite.move_block = [0,0]
 
     pathInterpole(sprite, sprite.speed[0] * time, sprite.speed[1] * time)
@@ -53,8 +54,8 @@ def pathInterpole(sprite: pygame.sprite.Sprite, pathx, pathy):
         if collisions:
             collideHandle(sprite, collisions)
 
-        stepx = signFilter(stepx, sprite.move_block[0])
-        stepy = signFilter(stepy, sprite.move_block[1])
+        stepx = blockFilter(stepx, sprite.move_block[0])
+        stepy = blockFilter(stepy, sprite.move_block[1])
 
         if stepx or stepy:
 
@@ -71,6 +72,7 @@ def pathInterpole(sprite: pygame.sprite.Sprite, pathx, pathy):
     sprite.add(group)
 
 def collideHandle(sprite: pygame.sprite.Sprite, collisions):
+
     for collided in collisions:
 
         diffx = (sprite.rect.centerx - collided.rect.centerx) / (sprite.rect.width + collided.rect.width)
@@ -78,24 +80,24 @@ def collideHandle(sprite: pygame.sprite.Sprite, collisions):
 
         if abs(diffx) > abs(diffy):
             if diffx < 0: 
-                sprite.move_block[0] = -1
+                sprite.move_block[0] += 2
             else:
-                sprite.move_block[0] = 1
+                sprite.move_block[0] += 1
         elif abs(diffy) > abs(diffx):
             if diffy < 0: 
-                sprite.move_block[1] = -1
+                sprite.move_block[1] += 2
             else:
-                sprite.move_block[1] = 1
+                sprite.move_block[1] += 1
         else:
             if diffx > 0:
-                sprite.move_block[0] = 1
+                sprite.move_block[0] += 1
                 if diffy > 0:
-                    sprite.move_block[1] = 1
+                    sprite.move_block[1] += 1
                 else:
-                    sprite.move_block[1] = -1
+                    sprite.move_block[1] += 2
             else:
-                sprite.move_block[0] = -1
+                sprite.move_block[0] += 2
                 if diffy > 0:
-                    sprite.move_block[1] = 1
+                    sprite.move_block[1] += 1
                 else:
-                    sprite.move_block[1] = -1
+                    sprite.move_block[1] += 2

@@ -3,19 +3,22 @@
 def sign(n):
     return abs(n)/n
 
-def signFilter(n, sign):
-    if sign > 0:
+def blockFilter(n, direction_code):
+    if direction_code == 0:
+        return n
+    elif direction_code == 1:
         if n > 0:
             return n
         else:
             return 0
-    elif sign < 0:
+    elif direction_code == 2:
         if n < 0:
             return n
         else:
             return 0
     else:
-        return n
+        return 0
+
 
 def segmentIntersection(segment1, segment2):
 

@@ -56,7 +56,6 @@ def gameRandController(**kwargs):
     if "rand_move_timer" in sprite.kwattrs:
         sprite.kwattrs["rand_move_timer"] += sprite._clock.get_time()
         if sprite.kwattrs["rand_move_timer"] > randint(200, 3000):
-            print("direction changed")
             sprite.kwattrs["direction"] = [randint(-1, 1), randint(-1, 1)]
             sprite.kwattrs["rand_move_timer"] = 0
         else:

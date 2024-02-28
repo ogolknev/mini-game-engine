@@ -49,8 +49,8 @@ creature = Entity(player_texture,
                   (randint(25, settings["window"]["resolution"][0] - 25), randint(25, settings["window"]["resolution"][1] - 25)),
                   gameRandController,
                   sprites,
-                  maxacceleration=8000,
-                  maxspeed=300)
+                  maxacceleration=5000,
+                  maxspeed=100)
 
 obstacle = Sprite(obstacle_texture,
                       (randint(25, settings["window"]["resolution"][0] - 25), randint(25, settings["window"]["resolution"][1] - 25)),

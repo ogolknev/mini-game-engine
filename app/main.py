@@ -4,7 +4,7 @@ from __init__ import window, run, sprites, settings, clock, font, scale, scale_t
 # главный цикл
 while run:
 
-    clock.tick() # подсчет времени между кадрами
+    clock.tick(30) # подсчет времени между кадрами
 
     # обработка событий
     for event in pygame.event.get():
