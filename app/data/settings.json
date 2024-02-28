@@ -1,0 +1,17 @@
+{
+    "window": 
+    {
+        "caption": "demo 0.0",
+        "resolution": [512,512],
+        "fullscreen": "off"
+    },
+    "key_controls":
+    {
+        "move_up": 119,
+        "move_left": 97,
+        "move_down": 115,
+        "move_right": 100,
+
+        "fullscreen": 1073741892
+    }
+}
