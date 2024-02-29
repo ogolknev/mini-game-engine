@@ -38,8 +38,10 @@ def standartMovement(sprite: pygame.sprite.Sprite, **kwargs):
     sprite.speed[0] += acceleration[0] * 2 * time
     sprite.speed[1] += acceleration[1] * 2 * time
 
-    sprite.speed[0] -= maxacceleration * sign(sprite.speed[0]) * time
-    sprite.speed[1] -= maxacceleration * sign(sprite.speed[1]) * time
+    decreasespeed = maxacceleration * sign(sprite.speed[0]) * time, maxacceleration * sign(sprite.speed[1]) * time
+
+    sprite.speed[0] -= decreasespeed[0] if abs(sprite.speed[0]) >= abs(decreasespeed[0]) else sprite.speed[0]
+    sprite.speed[1] -= decreasespeed[1] if abs(sprite.speed[1]) >= abs(decreasespeed[1]) else sprite.speed[1]
 
     if (sprite.speed[0]**2 + sprite.speed[1]**2)**(1/2) > maxspeed:
         sprite.speed[0] = move_direction[0] * maxspeed if not acceleration[1] else move_direction[0] * maxspeed / 2

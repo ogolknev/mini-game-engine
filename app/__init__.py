@@ -46,16 +46,16 @@ player = Entity(player_texture,
                 clock,
                 gameKeyController,
                 sprites,
-                maxacceleration=100000,
-                maxspeed=100)
+                maxacceleration=3000,
+                maxspeed=300)
 
 creature = Entity(player_texture,
                   (randint(25, settings["window"]["resolution"][0] - 25), randint(25, settings["window"]["resolution"][1] - 25)),
                   clock,
                   gameRandController,
                   sprites,
-                  maxacceleration=5000,
-                  maxspeed=100,
+                  maxacceleration=3000,
+                  maxspeed=200,
                   func=print)
 
 obstacle = Sprite(obstacle_texture,
