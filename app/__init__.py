@@ -42,7 +42,7 @@ player = Entity(player_texture,
                 (randint(25, settings["window"]["resolution"][0] - 25), randint(25, settings["window"]["resolution"][1] - 25)),
                 gameKeyController,
                 sprites,
-                maxacceleration=5000,
+                maxacceleration=100000,
                 maxspeed=100)
 
 creature = Entity(player_texture,

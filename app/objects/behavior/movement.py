@@ -26,23 +26,18 @@ def standartMovement(sprite: pygame.sprite.Sprite, **kwargs):
     acceleration = [maxacceleration * move_direction[0],
                     maxacceleration * move_direction[1]]
     
-    linespeed = (sprite.speed[0]**2 + sprite.speed[1]**2)**(1/2)
+    
+    sprite.speed[0] += acceleration[0] * 2 * time
+    sprite.speed[1] += acceleration[1] * 2 * time
 
-    if acceleration[0]:
-        if linespeed <= maxspeed - linespeed:
-            sprite.speed[0] += acceleration[0] * time
-        else:
-            sprite.speed[0] = move_direction[0] * maxspeed if not acceleration[1] else move_direction[0] * maxspeed / 2
-    else:
-        sprite.speed[0] -= maxacceleration * sign(sprite.speed[0]) * time if abs(sprite.speed[0]) > maxacceleration * time else sprite.speed[0]
+    sprite.speed[0] -= maxacceleration * sign(sprite.speed[0]) * time
+    sprite.speed[1] -= maxacceleration * sign(sprite.speed[1]) * time
 
-    if acceleration[1]:
-        if linespeed <= maxspeed - linespeed:
-            sprite.speed[1] += acceleration[1] * time
-        else:
-            sprite.speed[1] = move_direction[1] * maxspeed if not acceleration[0] else move_direction[1] * maxspeed / 2
-    else:
-        sprite.speed[1] -= maxacceleration * sign(sprite.speed[1]) * time if abs(sprite.speed[1]) > maxacceleration * time else sprite.speed[1]
+
+    if (sprite.speed[0]**2 + sprite.speed[1]**2)**(1/2) > maxspeed:
+        sprite.speed[0] = move_direction[0] * maxspeed if not acceleration[1] else move_direction[0] * maxspeed / 2
+        sprite.speed[1] = move_direction[1] * maxspeed if not acceleration[0] else move_direction[1] * maxspeed / 2
+
 
     sprite.move_block = [0,0]
 
