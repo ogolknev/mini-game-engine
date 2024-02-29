@@ -28,10 +28,10 @@ border_vertical_texture = pygame.Surface((50, settings["window"]["resolution"][1
 border_horizontal_texture.fill((255,255,255))
 border_vertical_texture.fill((255,255,255))
 
-border_top = Sprite(border_horizontal_texture, (settings["window"]["resolution"][0] // 2, 0), sprites)
-border_bottom = Sprite(border_horizontal_texture, (settings["window"]["resolution"][0] // 2, settings["window"]["resolution"][1]), sprites)
-border_left = Sprite(border_vertical_texture, (0, settings["window"]["resolution"][1] // 2), sprites)
-border_right = Sprite(border_vertical_texture, (settings["window"]["resolution"][0], settings["window"]["resolution"][1] // 2), sprites)
+# border_top = Sprite(border_horizontal_texture, (settings["window"]["resolution"][0] // 2, 0), sprites)
+# border_bottom = Sprite(border_horizontal_texture, (settings["window"]["resolution"][0] // 2, settings["window"]["resolution"][1]), sprites)
+# border_left = Sprite(border_vertical_texture, (0, settings["window"]["resolution"][1] // 2), sprites)
+# border_right = Sprite(border_vertical_texture, (settings["window"]["resolution"][0], settings["window"]["resolution"][1] // 2), sprites)
 
 player_texture = pygame.Surface((70,50))
 obstacle_texture = pygame.Surface((30,60))
@@ -50,7 +50,8 @@ creature = Entity(player_texture,
                   gameRandController,
                   sprites,
                   maxacceleration=5000,
-                  maxspeed=100)
+                  maxspeed=100,
+                  func=print)
 
 obstacle = Sprite(obstacle_texture,
                       (randint(25, settings["window"]["resolution"][0] - 25), randint(25, settings["window"]["resolution"][1] - 25)),

@@ -30,8 +30,8 @@ class Group(pygame.sprite.Group):
             rect.width *= scale
             rect.height *= scale
 
-            rect.centerx -= int(observer.float_position[0]) * scale - resolution[0] // 2
-            rect.centery -= int(observer.float_position[1]) * scale - resolution[1] // 2
+            rect.x -= observer.rect.centerx * scale - resolution[0] // 2
+            rect.y -= observer.rect.centery * scale - resolution[1] // 2
 
         return rect
     
@@ -112,6 +112,9 @@ class Entity(Sprite):
         self._lifetime += self._clock.get_time()
 
         standartMovement(self, **kwargs)
+
+        # if "func" in self.kwattrs:
+        #     self.kwattrs["func"](f"center: {self.rect.center}; float {self.float_position}" )
 
 
 

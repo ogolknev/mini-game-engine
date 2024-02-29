@@ -1,7 +1,7 @@
 
 
 def sign(n):
-    return abs(n)/n
+    return abs(n)/n if n != 0 else 0
 
 def blockFilter(n, direction_code):
     if direction_code == 0:

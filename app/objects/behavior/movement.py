@@ -18,22 +18,32 @@ def standartMovement(sprite: pygame.sprite.Sprite, **kwargs):
     maxspeed = sprite.kwattrs["maxspeed"]
     move_direction = sprite.controller(**(kwargs | {"sprite": sprite}))
 
+    # if "func" in sprite.kwattrs:
+    #     print(move_direction)
+
     time = sprite._clock.get_time() * 0.001
 
     acceleration = [maxacceleration * move_direction[0],
                     maxacceleration * move_direction[1]]
+    
+    linespeed = (sprite.speed[0]**2 + sprite.speed[1]**2)**(1/2)
 
-    if acceleration[0] and abs(sprite.speed[0]) < maxspeed:
-        sprite.speed[0] += acceleration[0] * time
+    if acceleration[0]:
+        if linespeed < maxspeed:
+            sprite.speed[0] += acceleration[0] * time
+        else:
+            sprite.speed[0] = move_direction[0] * maxspeed if not acceleration[1] else move_direction[0] * maxspeed / 2
     else:
         sprite.speed[0] -= maxacceleration * sign(sprite.speed[0]) * time if abs(sprite.speed[0]) > maxacceleration * time else sprite.speed[0]
 
-    if acceleration[1] and abs(sprite.speed[1]) < maxspeed:
-        sprite.speed[1] += acceleration[1] * time
+    if acceleration[1]:
+        if linespeed < maxspeed:
+            sprite.speed[1] += acceleration[1] * time
+        else:
+            sprite.speed[1] = move_direction[1] * maxspeed if not acceleration[0] else move_direction[1] * maxspeed / 2
     else:
         sprite.speed[1] -= maxacceleration * sign(sprite.speed[1]) * time if abs(sprite.speed[1]) > maxacceleration * time else sprite.speed[1]
 
-    print(sprite, sprite.move_block)
     sprite.move_block = [0,0]
 
     pathInterpole(sprite, sprite.speed[0] * time, sprite.speed[1] * time)
