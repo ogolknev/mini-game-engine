@@ -80,8 +80,8 @@ class Sprite(pygame.sprite.Sprite):
 
         self.image = texture
         self.rect = self.image.get_rect()
-        self.rect.center = position
-        self.float_position = list(position)
+        self.rect.x, self.rect.y = position
+        self.float_position = list(self.rect.center)
 
         self._clock = pygame.time.Clock()
         self._lifetime = 0

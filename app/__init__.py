@@ -23,15 +23,15 @@ observer = None
 
 sprites = Group()
 
-border_horizontal_texture = pygame.Surface((settings["window"]["resolution"][0], 50))
-border_vertical_texture = pygame.Surface((50, settings["window"]["resolution"][1]))
+border_horizontal_texture = pygame.Surface((1000, 50))
+border_vertical_texture = pygame.Surface((50, 1000))
 border_horizontal_texture.fill((255,255,255))
 border_vertical_texture.fill((255,255,255))
 
-# border_top = Sprite(border_horizontal_texture, (settings["window"]["resolution"][0] // 2, 0), sprites)
-# border_bottom = Sprite(border_horizontal_texture, (settings["window"]["resolution"][0] // 2, settings["window"]["resolution"][1]), sprites)
-# border_left = Sprite(border_vertical_texture, (0, settings["window"]["resolution"][1] // 2), sprites)
-# border_right = Sprite(border_vertical_texture, (settings["window"]["resolution"][0], settings["window"]["resolution"][1] // 2), sprites)
+border_top = Sprite(border_horizontal_texture, (50, 0), sprites)
+border_bottom = Sprite(border_horizontal_texture, (50, 1000 + 50), sprites)
+border_left = Sprite(border_vertical_texture, (0, 50), sprites)
+border_right = Sprite(border_vertical_texture, (1000 + 50, 50), sprites)
 
 player_texture = pygame.Surface((70,50))
 obstacle_texture = pygame.Surface((30,60))
