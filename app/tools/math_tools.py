@@ -1,4 +1,6 @@
-
+'''
+Математические функции
+'''
 
 def sign(n):
     return abs(n)/n if n != 0 else 0

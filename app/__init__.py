@@ -1,3 +1,6 @@
+'''
+Корень приложения.
+'''
 import pygame
 from tools.load_tools import loadJson
 from objects.sprites import Entity, Sprite, Group
@@ -28,10 +31,10 @@ border_vertical_texture = pygame.Surface((50, 1000))
 border_horizontal_texture.fill((255,255,255))
 border_vertical_texture.fill((255,255,255))
 
-border_top = Sprite(border_horizontal_texture, (50, 0), sprites)
-border_bottom = Sprite(border_horizontal_texture, (50, 1000 + 50), sprites)
-border_left = Sprite(border_vertical_texture, (0, 50), sprites)
-border_right = Sprite(border_vertical_texture, (1000 + 50, 50), sprites)
+border_top = Sprite(border_horizontal_texture, (50, 0), clock, sprites)
+border_bottom = Sprite(border_horizontal_texture, (50, 1000 + 50), clock, sprites)
+border_left = Sprite(border_vertical_texture, (0, 50), clock, sprites)
+border_right = Sprite(border_vertical_texture, (1000 + 50, 50), clock, sprites)
 
 player_texture = pygame.Surface((70,50))
 obstacle_texture = pygame.Surface((30,60))
@@ -40,6 +43,7 @@ obstacle_texture.fill((255,255,255))
 
 player = Entity(player_texture,
                 (randint(25, settings["window"]["resolution"][0] - 25), randint(25, settings["window"]["resolution"][1] - 25)),
+                clock,
                 gameKeyController,
                 sprites,
                 maxacceleration=100000,
@@ -47,6 +51,7 @@ player = Entity(player_texture,
 
 creature = Entity(player_texture,
                   (randint(25, settings["window"]["resolution"][0] - 25), randint(25, settings["window"]["resolution"][1] - 25)),
+                  clock,
                   gameRandController,
                   sprites,
                   maxacceleration=5000,
@@ -55,6 +60,7 @@ creature = Entity(player_texture,
 
 obstacle = Sprite(obstacle_texture,
                       (randint(25, settings["window"]["resolution"][0] - 25), randint(25, settings["window"]["resolution"][1] - 25)),
+                      clock,
                       sprites)
 
 observer = player

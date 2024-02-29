@@ -1,3 +1,6 @@
+'''
+Модуль содержит классы описывающие объекты внутри приложения и связанные с ними классы.
+'''
 import pygame
 import sys
 import os
@@ -6,6 +9,9 @@ from objects.behavior.movement import standartMovement
 
 
 class Group(pygame.sprite.Group):
+    '''
+    Станадртный класс `pygame.sprite.Group` с измененным методом `draw` - в нем реализованны `observer` и `scale`.
+    '''
 
     def __init__(self, *sprites) -> None:
 
@@ -74,7 +80,7 @@ class Group(pygame.sprite.Group):
 
 class Sprite(pygame.sprite.Sprite):
 
-    def __init__(self, texture: pygame.Surface, position: tuple, *groups) -> None:
+    def __init__(self, texture: pygame.Surface, position: tuple, clock, *groups, **kwargs) -> None:
 
         super().__init__(*groups)
 
@@ -83,7 +89,7 @@ class Sprite(pygame.sprite.Sprite):
         self.rect.x, self.rect.y = position
         self.float_position = list(self.rect.center)
 
-        self._clock = pygame.time.Clock()
+        self._clock = clock
         self._lifetime = 0
 
 
@@ -95,9 +101,9 @@ class Sprite(pygame.sprite.Sprite):
 
 class Entity(Sprite):
 
-    def __init__(self, texture: pygame.Surface, position: tuple, controller, *groups, **kwargs) -> None:
+    def __init__(self, texture: pygame.Surface, position: tuple, clock, controller, *groups, **kwargs) -> None:
 
-        super().__init__(texture, position, *groups)
+        super().__init__(texture, position, clock, *groups, **kwargs)
 
         self.controller = controller
 
@@ -108,7 +114,6 @@ class Entity(Sprite):
 
     def update(self, *args, **kwargs):
 
-        self._clock.tick()
         self._lifetime += self._clock.get_time()
 
         standartMovement(self, **kwargs)

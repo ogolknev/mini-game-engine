@@ -1,3 +1,6 @@
+'''
+Функции работающие с файлами.
+'''
 import json
 
 def loadJson(path: str) -> dict:

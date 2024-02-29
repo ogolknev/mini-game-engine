@@ -1,3 +1,6 @@
+'''
+Основной исполняемый файл.
+'''
 import pygame
 from __init__ import window, run, sprites, settings, clock, font, scale, scale_timer, observer, appKeyController
 

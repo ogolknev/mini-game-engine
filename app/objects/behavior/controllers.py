@@ -1,3 +1,6 @@
+'''
+Модуль описывающий контроллеры - функции управляющие другими объектами.
+'''
 import pygame
 from random import randint
 import sys
