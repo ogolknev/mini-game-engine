@@ -18,7 +18,7 @@ class Group(pygame.sprite.Group):
         super().__init__(*sprites)
 
 
-    def _setObserver(self, rect: pygame.Rect, image: pygame.surface.Surface, observer, resolution, scale):
+    def _setObserver(self, rect: pygame.Rect, hitbox_position, observer, resolution, scale):
 
         if observer.rect == rect:
 
@@ -34,7 +34,7 @@ class Group(pygame.sprite.Group):
             rect.x -= observer.rect.centerx * scale - resolution[0] // 2
             rect.y -= observer.rect.centery * scale - resolution[1] // 2
 
-        return rect.centerx - image.get_width() / 2 * scale, rect.centery - image.get_height() / 2 * scale
+        return rect.x - hitbox_position[0] * scale, rect.y - hitbox_position[1] * scale
     
 
     def _setScale(self, image, scale):
@@ -57,7 +57,7 @@ class Group(pygame.sprite.Group):
                 zip(
                     sprites,
                     surface.blits(
-                        (self._setScale(spr.image, scale), self._setObserver(spr.rect.copy(), spr.image, observer, resolution, scale), None, special_flags) for spr in sprites
+                        (self._setScale(spr.image, scale), self._setObserver(spr.rect.copy(), spr.hitbox_position, observer, resolution, scale), None, special_flags) for spr in sprites
                     ),
                 )
             )
@@ -81,6 +81,7 @@ class Sprite(pygame.sprite.Sprite):
 
         self.image = texture
         self.rect = hitbox if hitbox else self.image.get_rect()
+        self.hitbox_position = self.rect.x, self.rect.y
         self.rect.x, self.rect.y = position
         self.float_position = list(self.rect.center)
 

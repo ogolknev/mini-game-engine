@@ -49,7 +49,7 @@ player = Entity(player_texture,
                 (randint(25, settings["window"]["resolution"][0] - 25), randint(25, settings["window"]["resolution"][1] - 25)),
                 clock,
                 gameKeyController,
-                pygame.Rect(0,0,30,30),
+                pygame.Rect(20,20,30,30),
                 sprites,
                 maxacceleration=5000,
                 maxspeed=500)
