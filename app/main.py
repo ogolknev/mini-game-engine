@@ -2,7 +2,10 @@
 Основной исполняемый файл.
 '''
 import pygame
-from __init__ import window, run, sprites, settings, clock, font, scale, scale_timer, observer, appKeyController
+import sys
+import os
+sys.path.insert(1, os.path.abspath(__file__) + "/../..")
+from app import window, run, sprites, settings, clock, font, scale, scale_timer, observer, appKeyController
 
 # главный цикл
 while run:
