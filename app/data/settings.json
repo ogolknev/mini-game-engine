@@ -3,7 +3,8 @@
     {
         "caption": "demo 0.0",
         "resolution": [512,512],
-        "fullscreen": "off"
+        "fullscreen": "off",
+        "fps": 0
     },
     "key_controls":
     {

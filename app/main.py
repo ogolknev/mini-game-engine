@@ -5,12 +5,12 @@ import pygame
 import sys
 import os
 sys.path.insert(1, os.path.abspath(__file__) + "/../..")
-from app import window, run, sprites, settings, clock, font, scale, scale_timer, observer, appKeyController
+from app import window, run, sprites, settings, clock, fps, font, scale, scale_timer, observer, appKeyController
 
 # главный цикл
 while run:
 
-    clock.tick(60) # подсчет времени между кадрами
+    clock.tick(fps) # подсчет времени между кадрами
 
     # обработка событий
     for event in pygame.event.get():

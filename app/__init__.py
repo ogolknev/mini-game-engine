@@ -17,8 +17,12 @@ pygame.display.set_caption(settings["window"]["caption"])
 resolution_modes = pygame.display.list_modes() # список доступных разрешений
 
 clock = pygame.time.Clock() # объект pygame для отслеживания времени
+fps = settings["window"]["fps"]
 
 run = True # индикатор работы
+
+scale = 1.0
+scale_timer = 0
 
 observer = None
 
@@ -31,13 +35,13 @@ border_vertical_texture = pygame.Surface((50, 1000))
 border_horizontal_texture.fill((255,255,255))
 border_vertical_texture.fill((255,255,255))
 
-border_top = Sprite(border_horizontal_texture, (50, 0), clock, sprites)
-border_bottom = Sprite(border_horizontal_texture, (50, 1000 + 50), clock, sprites)
-border_left = Sprite(border_vertical_texture, (0, 50), clock, sprites)
-border_right = Sprite(border_vertical_texture, (1000 + 50, 50), clock, sprites)
+border_top = Sprite(border_horizontal_texture, (50, 0), clock, None, sprites)
+border_bottom = Sprite(border_horizontal_texture, (50, 1000 + 50), clock, None, sprites)
+border_left = Sprite(border_vertical_texture, (0, 50), clock, None, sprites)
+border_right = Sprite(border_vertical_texture, (1000 + 50, 50), clock, None, sprites)
 
-player_texture = pygame.Surface((70,50))
-obstacle_texture = pygame.Surface((30,60))
+player_texture = pygame.Surface((70,70))
+obstacle_texture = pygame.Surface((randint(5, 200), randint(5, 200)))
 player_texture.fill((255,255,255))
 obstacle_texture.fill((255,255,255))
 
@@ -45,14 +49,16 @@ player = Entity(player_texture,
                 (randint(25, settings["window"]["resolution"][0] - 25), randint(25, settings["window"]["resolution"][1] - 25)),
                 clock,
                 gameKeyController,
+                pygame.Rect(0,0,30,30),
                 sprites,
-                maxacceleration=3000,
-                maxspeed=300)
+                maxacceleration=5000,
+                maxspeed=500)
 
 creature = Entity(player_texture,
                   (randint(25, settings["window"]["resolution"][0] - 25), randint(25, settings["window"]["resolution"][1] - 25)),
                   clock,
                   gameRandController,
+                  None,
                   sprites,
                   maxacceleration=3000,
                   maxspeed=200,
@@ -61,6 +67,7 @@ creature = Entity(player_texture,
 obstacle = Sprite(obstacle_texture,
                       (randint(25, settings["window"]["resolution"][0] - 25), randint(25, settings["window"]["resolution"][1] - 25)),
                       clock,
+                      None,
                       sprites)
 
 observer = player

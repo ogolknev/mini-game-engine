@@ -18,12 +18,9 @@ class Group(pygame.sprite.Group):
         super().__init__(*sprites)
 
 
-    def _setObserver(self, rect, observer, resolution, scale):
+    def _setObserver(self, rect: pygame.Rect, image: pygame.surface.Surface, observer, resolution, scale):
 
         if observer.rect == rect:
-
-            rect.width *= scale
-            rect.height *= scale
 
             rect.centerx = resolution[0] // 2
             rect.centery = resolution[1] // 2
@@ -33,13 +30,11 @@ class Group(pygame.sprite.Group):
 
             rect.x *= scale
             rect.y *= scale
-            rect.width *= scale
-            rect.height *= scale
 
             rect.x -= observer.rect.centerx * scale - resolution[0] // 2
             rect.y -= observer.rect.centery * scale - resolution[1] // 2
 
-        return rect
+        return rect.centerx - image.get_width() / 2 * scale, rect.centery - image.get_height() / 2 * scale
     
 
     def _setScale(self, image, scale):
@@ -62,7 +57,7 @@ class Group(pygame.sprite.Group):
                 zip(
                     sprites,
                     surface.blits(
-                        (self._setScale(spr.image, scale), self._setObserver(spr.rect.copy(), observer, resolution, scale), None, special_flags) for spr in sprites
+                        (self._setScale(spr.image, scale), self._setObserver(spr.rect.copy(), spr.image, observer, resolution, scale), None, special_flags) for spr in sprites
                     ),
                 )
             )
@@ -70,7 +65,7 @@ class Group(pygame.sprite.Group):
             for spr in sprites:
                 
                 self.spritedict[spr] = surface.blit(
-                    self._setScale(spr.image, scale), self._setObserver(spr.rect.copy(), observer, resolution, scale), None, special_flags
+                    self._setScale(spr.image, scale), self._setObserver(spr.rect.copy(), spr.image, observer, resolution, scale), None, special_flags
                 )
 
         self.lostsprites = []
@@ -80,12 +75,12 @@ class Group(pygame.sprite.Group):
 
 class Sprite(pygame.sprite.Sprite):
 
-    def __init__(self, texture: pygame.Surface, position: tuple, clock, *groups, **kwargs) -> None:
+    def __init__(self, texture: pygame.Surface, position: tuple, clock, hitbox: pygame.Rect=None, *groups, **kwargs) -> None:
 
         super().__init__(*groups)
 
         self.image = texture
-        self.rect = self.image.get_rect()
+        self.rect = hitbox if hitbox else self.image.get_rect()
         self.rect.x, self.rect.y = position
         self.float_position = list(self.rect.center)
 
@@ -101,9 +96,9 @@ class Sprite(pygame.sprite.Sprite):
 
 class Entity(Sprite):
 
-    def __init__(self, texture: pygame.Surface, position: tuple, clock, controller, *groups, **kwargs) -> None:
+    def __init__(self, texture: pygame.Surface, position: tuple, clock, controller, hitbox: pygame.Rect=None, *groups, **kwargs) -> None:
 
-        super().__init__(texture, position, clock, *groups, **kwargs)
+        super().__init__(texture, position, clock, hitbox, *groups, **kwargs)
 
         self.controller = controller
 
@@ -118,8 +113,6 @@ class Entity(Sprite):
 
         standartMovement(self, **kwargs)
 
-        # if "func" in self.kwattrs:
-        #     self.kwattrs["func"](f"center: {self.rect.center}; float {self.float_position}" )
 
 
 
