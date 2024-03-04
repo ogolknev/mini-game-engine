@@ -5,7 +5,8 @@ import pygame
 import sys
 import os
 sys.path.insert(1, os.path.abspath(__file__) + "/../..")
-from app import window, run, sprites, settings, clock, fps, font, scale, scale_timer, observer, appKeyController
+from app import (window, run, entities, moving_entities, settings, clock,
+                 fps, font, scale, scale_timer, observer, appKeyController)
 
 # главный цикл
 while run:
@@ -28,11 +29,12 @@ while run:
                                                     scale_timer=scale_timer,
                                                     tick_time=clock.get_time())
 
-    sprites.update(settings=settings,
+    entities.update(settings=settings,
                    window=window,
-                   pressed_keys=pressed_keys) # обновление всех спрайтов
+                   pressed_keys=pressed_keys,
+                   moving_entities=moving_entities) # обновление всех спрайтов
 
-    sprites.draw(settings=settings,
+    entities.draw(settings=settings,
                  surface=window,
                  observer=observer,
                  scale=scale) # рендер всех спрайтов

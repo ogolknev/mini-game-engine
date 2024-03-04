@@ -26,21 +26,22 @@ scale_timer = 0
 
 observer = None
 
-# TEST.SPRITES
+# TEST.entities
 
-sprites = Group()
+entities = Group()
+moving_entities = Group()
 
 border_horizontal_texture = pygame.Surface((1000, 50))
 border_vertical_texture = pygame.Surface((50, 1000))
 border_horizontal_texture.fill((255,255,255))
 border_vertical_texture.fill((255,255,255))
 
-border_top = Sprite(border_horizontal_texture, (50, 0), clock, None, sprites)
-border_bottom = Sprite(border_horizontal_texture, (50, 1000 + 50), clock, None, sprites)
-border_left = Sprite(border_vertical_texture, (0, 50), clock, None, sprites)
-border_right = Sprite(border_vertical_texture, (1000 + 50, 50), clock, None, sprites)
+border_top = Sprite(border_horizontal_texture, (50, 0), clock, None, entities)
+border_bottom = Sprite(border_horizontal_texture, (50, 1000 + 50), clock, None, entities)
+border_left = Sprite(border_vertical_texture, (0, 50), clock, None, entities)
+border_right = Sprite(border_vertical_texture, (1000 + 50, 50), clock, None, entities)
 
-player_texture = pygame.Surface((70,70))
+player_texture = pygame.Surface((10,10))
 obstacle_texture = pygame.Surface((randint(5, 200), randint(5, 200)))
 player_texture.fill((255,255,255))
 obstacle_texture.fill((255,255,255))
@@ -49,8 +50,8 @@ player = Entity(player_texture,
                 (randint(25, settings["window"]["resolution"][0] - 25), randint(25, settings["window"]["resolution"][1] - 25)),
                 clock,
                 gameKeyController,
-                pygame.Rect(20,20,30,30),
-                sprites,
+                None, # pygame.Rect(20,20,30,30),
+                entities, moving_entities,
                 maxacceleration=5000,
                 maxspeed=500)
 
@@ -59,7 +60,7 @@ creature = Entity(player_texture,
                   clock,
                   gameRandController,
                   None,
-                  sprites,
+                  entities, moving_entities,
                   maxacceleration=3000,
                   maxspeed=200,
                   func=print)
@@ -68,7 +69,7 @@ obstacle = Sprite(obstacle_texture,
                       (randint(25, settings["window"]["resolution"][0] - 25), randint(25, settings["window"]["resolution"][1] - 25)),
                       clock,
                       None,
-                      sprites)
+                      entities)
 
 observer = player
 

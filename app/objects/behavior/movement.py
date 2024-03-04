@@ -2,25 +2,14 @@
 Модуль содержит функции описывающие движение объектов.
 '''
 import pygame
+import math
 import sys
 import os
 sys.path.insert(1, os.path.abspath(__file__) + "/../../..")
-from tools.math_tools import sign, blockFilter
+from tools.math_tools import sign, blockFilter, absMax
 
 
-def standartMovement(sprite: pygame.sprite.Sprite, **kwargs):
-    '''
-    Принимает:
-    - `sprite` - объект для которого реализуется передвижение
-    - `kwargs` - дополнительные аргументы:
-        - обязательные: аргументы необходимые для контроллера объекта
-    
-    Реализует передвижение объекта через направление движения определяемое контроллером объекта.
-    Имея направление, объект ускоряется с постоянным ускорением `maxacceleration` пока не упирается в препятствие
-    или максимальную скорость `maxspeed`. Теряя направление, объект замедляется с тем же ускорением `maxacceleration`.
-    Наткнувшись на препятствие объект останавливается и больше не может двигаться в данном направлении,
-    поскольку данное направление добавляется в заблокированные направления `move_block` и остается там пока объект упирается в это припятствие.
-    '''
+def calculatePath(sprite: pygame.sprite.Sprite, **kwargs):
 
     # Извлечение необходимых аттрибутов из объекта
     maxacceleration = sprite.kwattrs["maxacceleration"]
@@ -47,51 +36,64 @@ def standartMovement(sprite: pygame.sprite.Sprite, **kwargs):
         sprite.speed[0] = move_direction[0] * maxspeed if not acceleration[1] else move_direction[0] * maxspeed / 2
         sprite.speed[1] = move_direction[1] * maxspeed if not acceleration[0] else move_direction[1] * maxspeed / 2
 
-    sprite.move_block = [0,0]
+    sprite.path = [sprite.speed[0] * time, sprite.speed[1] * time]
 
-    pathInterpole(sprite, (sprite.speed[0] * time, sprite.speed[1] * time))
+    return sprite.path
 
-def pathInterpole(sprite: pygame.sprite.Sprite, path):
+
+def calculateEntitiesPaths(**kwargs):
     '''
     Принимает:
-    - `sprite` - объект для которого реализуется передвижение
-    - `path` - путь (изменение положения (diffx, diffy)) объекта между двумя кадрами
+    - `group` - группа сущностей для которых вычисляются пути (смещения между текущим и следующим кадром)
+    - `kwargs` - дополнительные аргументы
 
-    Разбивает путь `path` на маленькие отрезки `stepx`/`stepy` и реализует передвижение,
-    проверяя столкновения и применяя блокировки `move_block` движения на каждом отрезке.
+    Вычисляет путь для каждой сущности из группы. Возвращает список всех компонентов (горизонатльный/вертикальный путь)
+    всех вычесленных путей.
     '''
 
-    steps_num = int(max(abs(path[0]), abs(path[1]))) + 1
-    stepx = path[0] / steps_num
-    stepy = path[1] / steps_num
+    moving_entities = kwargs["moving_entities"]
+    paths = []
 
-    group = sprite.groups()[0]
-    sprite.remove(group)
+    for sprite in moving_entities.sprites():
+        paths += calculatePath(sprite, **kwargs)
+
+    return paths
+
+
+def standartMovement(entities: pygame.sprite.Group,
+                     **kwargs):
+    
+
+    moving_entities = kwargs["moving_entities"]
+
+    steps_num = math.ceil(absMax(calculateEntitiesPaths(**kwargs)))
+
+    if not steps_num: return 0
+
+    steps = {}
+    for entity in moving_entities:
+        steps.update({entity: [entity.path[0] / steps_num, entity.path[1] / steps_num]})
+    
 
     for _ in range(steps_num):
 
-        collisions = pygame.sprite.spritecollide(sprite, group, False)
+        for entity in moving_entities:
 
-        if collisions:
-            collideHandle(sprite, collisions)
+            entity.remove(entities)
+            entity.move_block = [0,0]
 
-        stepx = blockFilter(stepx, sprite.move_block[0])
-        stepy = blockFilter(stepy, sprite.move_block[1])
+            collisions = pygame.sprite.spritecollide(entity, entities, False)
+            if collisions:
+                collideHandle(entity, collisions)
 
-        if stepx or stepy:
+            entity.float_position[0] += blockFilter(steps[entity][0], entity.move_block[0])
+            entity.float_position[1] += blockFilter(steps[entity][1], entity.move_block[1])
 
-            sprite.float_position[0] += stepx
-            sprite.float_position[1] += stepy
+            entity.rect.centerx = int(entity.float_position[0])
+            entity.rect.centery = int(entity.float_position[1])
 
-            sprite.rect.centerx = int(sprite.float_position[0])
-            sprite.rect.centery = int(sprite.float_position[1])
-
-        else:
-
-            break
-
-    
-    sprite.add(group)
+            entity.add(entities)
+            
 
 def collideHandle(sprite: pygame.sprite.Sprite, collisions):
     '''

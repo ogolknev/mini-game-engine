@@ -5,6 +5,11 @@
 def sign(n):
     return abs(n)/n if n != 0 else 0
 
+
+def absMax(nums: list):
+    return max(abs(num) for num in nums)
+
+
 def blockFilter(n, direction_code):
     if direction_code == 0:
         return n
