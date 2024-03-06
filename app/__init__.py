@@ -44,16 +44,17 @@ player_texture.fill((255,255,255))
 obstacle_texture.fill((255,255,255))
 
 player = Entity(player_texture,
-                (randint(50, 450), randint(50, 450)),
+                (randint(50, 950), randint(50, 950)),
                 clock,
                 gameKeyController,
                 None, # pygame.Rect(20,20,30,30),
                 entities, moving_entities,
                 maxacceleration=5000,
                 maxspeed=500)
-for _ in range(20):
+
+for _ in range(100):
     creature = Entity(player_texture,
-                    (randint(50, 450), randint(50, 450)),
+                    (randint(50, 950), randint(50, 950)),
                     clock,
                     gameRandController,
                     None,

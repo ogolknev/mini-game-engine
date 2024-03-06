@@ -5,8 +5,7 @@ import pygame
 import sys
 import os
 sys.path.insert(1, os.path.abspath(__file__) + "/../..")
-from objects.behavior.movement import standartMovement, calculateEntitiesPaths
-from tools.math_tools import absMax
+from objects.behavior.movement import standartMovement
 
 class Group(pygame.sprite.Group):
     '''
@@ -93,7 +92,6 @@ class Sprite(pygame.sprite.Sprite):
         self._clock = clock
         self._lifetime = 0
 
-
     def update(self, *args, **kwargs):
         pass
 
@@ -113,10 +111,5 @@ class Entity(Sprite):
         self.kwattrs = kwargs
 
     def update(self, *args, **kwargs):
-
-        self._lifetime += self._clock.get_time()
-
-        # standartMovement(self, **kwargs)
-
-
+        pass
         

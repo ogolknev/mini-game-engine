@@ -26,20 +26,21 @@ while run:
     settings, scale, run = appKeyController(settings=settings,
                                             pressed_keys=pressed_keys,
                                             scale=scale,
-                                            scale_clock=clock)
+                                            scale_clock=clock,
+                                            run = run)
 
     entities.update(settings=settings,
-                   window=window,
-                   pressed_keys=pressed_keys,
-                   moving_entities=moving_entities) # обновление всех спрайтов
+                    window=window,
+                    pressed_keys=pressed_keys,
+                    moving_entities=moving_entities) # обновление всех спрайтов
 
     entities.draw(settings=settings,
-                 surface=window,
-                 observer=observer,
-                 scale=scale) # рендер всех спрайтов
+                  surface=window,
+                  observer=observer,
+                  scale=scale) # рендер всех спрайтов
 
 
-    window.blit(font.render(str(int(clock.get_fps())) + " fps", True, (0,0,0), (200,200,200)), (200, 200))
+    window.blit(font.render(str(int(clock.get_fps())) + " fps", True, (0,0,0), (200,200,200)), (0, 0))
 
     pygame.display.flip() # смена кадра
 

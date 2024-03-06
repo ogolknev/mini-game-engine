@@ -12,7 +12,7 @@ def appKeyController(pressed_keys: pygame.key.ScancodeWrapper, **kwargs):
     '''
     '''
     settings = kwargs["settings"]
-    run = True
+    run = kwargs["run"]
     key_controls = settings["key_controls"]
     scale = kwargs["scale"]
     scale_clock = kwargs["scale_clock"]
@@ -23,7 +23,7 @@ def appKeyController(pressed_keys: pygame.key.ScancodeWrapper, **kwargs):
         settings["window"]["resolution"] = list(pygame.display.get_window_size())
 
     if pressed_keys[key_controls["exit"]]:
-        run = False
+        run = False and run
 
     if pressed_keys[key_controls["scale_up"]]:
         scale += 2 * 0.0005 * scale_clock.get_time()

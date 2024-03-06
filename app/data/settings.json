@@ -2,9 +2,9 @@
     "window": 
     {
         "caption": "demo 0.0",
-        "resolution": [1920,1080],
+        "resolution": [500,500],
         "fullscreen": 0,
-        "fps": 0
+        "fps": 60
     },
     "key_controls":
     {
