@@ -22,19 +22,18 @@ class Group(pygame.sprite.Group):
 
         if observer.rect == rect:
 
+            rect.width = int(rect.width * scale)
+            rect.height = int(rect.height * scale)
+
             rect.centerx = resolution[0] // 2
             rect.centery = resolution[1] // 2
 
-
         else:
 
-            rect.x *= scale
-            rect.y *= scale
+            rect.x = (rect.x - observer.rect.centerx) * scale + resolution[0] // 2
+            rect.y = (rect.y - observer.rect.centery) * scale + resolution[1] // 2
 
-            rect.x -= observer.rect.centerx * scale - resolution[0] // 2
-            rect.y -= observer.rect.centery * scale - resolution[1] // 2
-
-        return rect.x - hitbox_position[0] * scale, rect.y - hitbox_position[1] * scale
+        return rect
     
 
     def _setScale(self, image, scale):

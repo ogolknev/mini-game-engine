@@ -12,25 +12,28 @@ def appKeyController(pressed_keys: pygame.key.ScancodeWrapper, **kwargs):
     '''
     '''
     settings = kwargs["settings"]
+    run = True
     key_controls = settings["key_controls"]
     scale = kwargs["scale"]
-    scale_timer = kwargs["scale_timer"]
-    scale_timer += kwargs["tick_time"]
+    scale_clock = kwargs["scale_clock"]
+    
 
     if pressed_keys[key_controls["fullscreen"]]:
         pygame.display.toggle_fullscreen()
         settings["window"]["resolution"] = list(pygame.display.get_window_size())
 
-    if pressed_keys[key_controls["scale_up"]]:
-        if scale < 2 and scale_timer > 30:
-            scale += 0.02
-            scale_timer = 0
-    if pressed_keys[key_controls["scale_down"]]:
-        if scale > 0.2 and scale_timer > 30: 
-            scale -= 0.02
-            scale_timer = 0
+    if pressed_keys[key_controls["exit"]]:
+        run = False
 
-    return settings, scale, scale_timer
+    if pressed_keys[key_controls["scale_up"]]:
+        scale += 2 * 0.0005 * scale_clock.get_time()
+        if scale > 2: scale = 2
+    if pressed_keys[key_controls["scale_down"]]:
+        scale -= 2 * 0.0005 * scale_clock.get_time()
+        if scale < 0.2: scale = 0.2
+
+
+    return settings, scale, run
 
 
 def gameKeyController(**kwargs):

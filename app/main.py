@@ -6,7 +6,7 @@ import sys
 import os
 sys.path.insert(1, os.path.abspath(__file__) + "/../..")
 from app import (window, run, entities, moving_entities, settings, clock,
-                 fps, font, scale, scale_timer, observer, appKeyController)
+                 fps, font, scale, observer, appKeyController)
 
 # главный цикл
 while run:
@@ -23,11 +23,10 @@ while run:
 
     pressed_keys = pygame.key.get_pressed()
 
-    settings, scale, scale_timer = appKeyController(settings=settings,
-                                                    pressed_keys=pressed_keys,
-                                                    scale=scale,
-                                                    scale_timer=scale_timer,
-                                                    tick_time=clock.get_time())
+    settings, scale, run = appKeyController(settings=settings,
+                                            pressed_keys=pressed_keys,
+                                            scale=scale,
+                                            scale_clock=clock)
 
     entities.update(settings=settings,
                    window=window,
@@ -40,7 +39,7 @@ while run:
                  scale=scale) # рендер всех спрайтов
 
 
-    window.blit(font.render(str(int(clock.get_fps())) + " fps", True, (0,0,0), (200,200,200)), (0, 0))
+    window.blit(font.render(str(int(clock.get_fps())) + " fps", True, (0,0,0), (200,200,200)), (200, 200))
 
     pygame.display.flip() # смена кадра
 
