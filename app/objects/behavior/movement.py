@@ -107,8 +107,8 @@ def collideHandle(sprite: pygame.sprite.Sprite, collisions):
 
     for collided in collisions:
 
-        diffx = (sprite.rect.centerx - collided.rect.centerx) / (sprite.rect.width + collided.rect.width)
-        diffy = (sprite.rect.centery - collided.rect.centery) / (sprite.rect.height + collided.rect.height)
+        diffx = (sprite.rect.centerx - collided.rect.centerx) / max(sprite.rect.width, collided.rect.width)
+        diffy = (sprite.rect.centery - collided.rect.centery) / max(sprite.rect.height, collided.rect.height)
 
         if abs(diffx) > abs(diffy):
             if diffx < 0: 

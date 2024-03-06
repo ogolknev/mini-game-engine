@@ -52,7 +52,7 @@ player = Entity(player_texture,
                 maxacceleration=5000,
                 maxspeed=500)
 
-for _ in range(100):
+for _ in range(10):
     creature = Entity(player_texture,
                     (randint(50, 950), randint(50, 950)),
                     clock,
