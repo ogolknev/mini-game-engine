@@ -33,40 +33,57 @@ border_vertical_texture = pygame.Surface((50, 1000))
 border_horizontal_texture.fill((255,255,255))
 border_vertical_texture.fill((255,255,255))
 
-border_top = Sprite(border_horizontal_texture, (50, 0), clock, None, entities)
-border_bottom = Sprite(border_horizontal_texture, (50, 1000 + 50), clock, None, entities)
-border_left = Sprite(border_vertical_texture, (0, 50), clock, None, entities)
-border_right = Sprite(border_vertical_texture, (1000 + 50, 50), clock, None, entities)
+border_top = Sprite((50, 0), clock, None, None, border_horizontal_texture, entities)
+border_bottom = Sprite((50, 1000 + 50), clock, None, None, border_horizontal_texture, entities)
+border_left = Sprite((0, 50), clock, None, None, border_vertical_texture, entities)
+border_right = Sprite((1000 + 50, 50), clock, None, None, border_vertical_texture, entities)
 
-player_texture = pygame.Surface((11,11))
+player_spritesheet_image = pygame.image.load(os.path.abspath(__file__) + "/../static/textures/spritesheets/spritesheet_man.png")
+player_spritesheet = {
+    "default": player_spritesheet_image.subsurface(pygame.Rect(0,0,16,16)),
+    "moving": {
+        (0,0): (player_spritesheet_image.subsurface(pygame.Rect(0,0,16,16)),),
+        (0,-1): (player_spritesheet_image.subsurface(pygame.Rect(0,0,16,16)), player_spritesheet_image.subsurface(pygame.Rect(16,0,16,16))),
+        (1,-1): (player_spritesheet_image.subsurface(pygame.Rect(0,0,16,16)), player_spritesheet_image.subsurface(pygame.Rect(16,0,16,16))),
+        (1,0): (player_spritesheet_image.subsurface(pygame.Rect(0,0,16,16)), player_spritesheet_image.subsurface(pygame.Rect(16,0,16,16))),
+        (1,1): (player_spritesheet_image.subsurface(pygame.Rect(0,0,16,16)), player_spritesheet_image.subsurface(pygame.Rect(16,0,16,16))),
+        (0,1): (player_spritesheet_image.subsurface(pygame.Rect(0,0,16,16)), player_spritesheet_image.subsurface(pygame.Rect(16,0,16,16))),
+        (-1,1): (player_spritesheet_image.subsurface(pygame.Rect(0,0,16,16)), player_spritesheet_image.subsurface(pygame.Rect(16,0,16,16))),
+        (-1,0): (player_spritesheet_image.subsurface(pygame.Rect(0,0,16,16)), player_spritesheet_image.subsurface(pygame.Rect(16,0,16,16))),
+        (-1,-1): (player_spritesheet_image.subsurface(pygame.Rect(0,0,16,16)), player_spritesheet_image.subsurface(pygame.Rect(16,0,16,16))),
+    }
+}
+player_texture = player_spritesheet_image.subsurface(pygame.Rect(0,0,16,16))
 obstacle_texture = pygame.Surface((randint(5, 200), randint(5, 200)))
-player_texture.fill((255,255,255))
 obstacle_texture.fill((255,255,255))
 
-player = Entity(player_texture,
-                (randint(50, 950), randint(50, 950)),
+player = Entity((randint(50, 950), randint(50, 950)),
                 clock,
                 gameKeyController,
-                None, # pygame.Rect(20,20,30,30),
+                pygame.Rect(2,0,12,16),
+                player_spritesheet,
+                None,
                 entities, moving_entities,
                 maxacceleration=5000,
                 maxspeed=500)
 
 for _ in range(10):
-    creature = Entity(player_texture,
-                    (randint(50, 950), randint(50, 950)),
-                    clock,
-                    gameRandController,
-                    None,
-                    entities, moving_entities,
-                    maxacceleration=3000,
-                    maxspeed=200,
-                    func=print)
+    creature = Entity((randint(50, 950), randint(50, 950)),
+                      clock,
+                      gameRandController,
+                      pygame.Rect(2,0,12,16),
+                      player_spritesheet,
+                      None,
+                      entities, moving_entities,
+                      maxacceleration=3000,
+                      maxspeed=200,
+                      func=print)
 
-obstacle = Sprite(obstacle_texture,
-                  (randint(25, settings["window"]["resolution"][0] - 25), randint(25, settings["window"]["resolution"][1] - 25)),
+obstacle = Sprite((randint(25, settings["window"]["resolution"][0] - 25), randint(25, settings["window"]["resolution"][1] - 25)),
                   clock,
                   None,
+                  None,
+                  obstacle_texture,
                   entities)
 
 observer = player

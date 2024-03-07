@@ -6,6 +6,15 @@ def sign(n):
     return abs(n)/n if n != 0 else 0
 
 
+def nextIterible(iterible, index, time):
+    if not iter(iterible):
+        return iterible, -1
+    index += 0.01 * time
+    if index < len(iterible):
+        return iterible[int(index)], index
+    return iterible[0], -1
+
+
 def absMax(nums: list):
     return max(abs(num) for num in nums)
 

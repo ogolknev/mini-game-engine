@@ -6,6 +6,7 @@ import sys
 import os
 sys.path.insert(1, os.path.abspath(__file__) + "/../..")
 from objects.behavior.movement import standartMovement
+from tools.math_tools import nextIterible
 
 class Group(pygame.sprite.Group):
     '''
@@ -32,7 +33,7 @@ class Group(pygame.sprite.Group):
             rect.x = (rect.x - observer.rect.centerx) * scale + resolution[0] // 2
             rect.y = (rect.y - observer.rect.centery) * scale + resolution[1] // 2
 
-        return rect
+        return rect.x - hitbox_position[0] * scale, rect.y - hitbox_position[1] * scale
     
 
     def _setScale(self, image, scale):
@@ -79,11 +80,21 @@ class Group(pygame.sprite.Group):
 
 class Sprite(pygame.sprite.Sprite):
 
-    def __init__(self, texture: pygame.Surface, position: tuple, clock, hitbox: pygame.Rect=None, *groups, **kwargs) -> None:
+    def __init__(self,
+                 position: tuple,
+                 clock,
+                 hitbox: pygame.Rect=None,
+                 spritesheet: dict=None,
+                 texture: pygame.Surface=None,
+                 *groups,
+                 **kwargs) -> None:
 
         super().__init__(*groups)
 
-        self.image = texture
+        self.image = spritesheet["default"] if spritesheet else texture
+        self.spritesheet = spritesheet
+        self._animation_frame_index = -1
+
         self.rect = hitbox if hitbox else self.image.get_rect()
         self.hitbox_position = self.rect.x, self.rect.y
         self.rect.x, self.rect.y = position
@@ -98,9 +109,17 @@ class Sprite(pygame.sprite.Sprite):
 
 class Entity(Sprite):
 
-    def __init__(self, texture: pygame.Surface, position: tuple, clock, controller, hitbox: pygame.Rect=None, *groups, **kwargs) -> None:
+    def __init__(self, 
+                 position: tuple, 
+                 clock, 
+                 controller, 
+                 hitbox: pygame.Rect=None, 
+                 spritesheet: dict=None,
+                 texture: pygame.Surface=None, 
+                 *groups, 
+                 **kwargs) -> None:
 
-        super().__init__(texture, position, clock, hitbox, *groups, **kwargs)
+        super().__init__(position, clock, hitbox, spritesheet, texture, *groups, **kwargs)
 
         self.controller = controller
 
@@ -112,4 +131,20 @@ class Entity(Sprite):
 
     def update(self, *args, **kwargs):
         pass
+
+    def animation(self, mode=None, *args):
+
+        if mode:
+            self.image = self.spritesheet[mode]
+            for arg in args:
+                self.image = self.image[arg]
+                print(self.image)
+        else:
+            self.image = self.spritesheet["default"]
+            
+        self.image, self._animation_frame_index = nextIterible(self.image, self._animation_frame_index, self._clock.get_time())
+        
+
+
+        
         
