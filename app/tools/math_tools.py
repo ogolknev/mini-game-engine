@@ -2,38 +2,109 @@
 Математические функции
 '''
 
-def sign(n):
+def sign(n: float) -> float:
+    '''
+    Определяет знак числа.
+
+    Параметры:
+    - `n` - число для которого определяется знак
+
+    Возвращает:
+    - -1, `n` < 0
+    - 0, `n` = 0
+    - 1, `n` > 0
+    '''
     return abs(n)/n if n != 0 else 0
 
 
-def nextIterible(iterible, index, time):
+def nextIterible(iterible, index: float, time: int, speed: int) -> any:
+    '''
+    Перебирает элементы итерируемого объекта с заданной скоростью.
+
+    Параметры:
+    - `iterible` - итерируемый объект, для которого проверяется должен ли смениться элемент
+    - `index` - текущий `float` индекс
+    - `time` - время с предидущего вызова
+    - `speed` - скорость (элементы/секунду) с которой сменяются элементы итерируемого объекта
+
+    Возвращает:
+    - текущий элемент и текущий `float` индекс
+    '''
+
     if not iter(iterible):
         return iterible, -1
-    index += 0.01 * time
+    index += speed * 0.001 * time
     if index < len(iterible):
         return iterible[int(index)], index
     return iterible[0], -1
 
 
-def absMax(nums: list):
+def absMax(nums):
+    '''
+    Находит максимальное по модулю число из набора.
+
+    Параметры:
+    - `nums` - набор чисел
+
+    Возвращает:
+    - модуль максимального по модулю числа из набора
+    '''
     return max(abs(num) for num in nums)
 
 
-def blockFilter(n, direction_code):
-    if direction_code == 0:
+def signFilter(n: float, mode: int):
+    '''
+    Пропускает число, если оно соответсвтует условию.
+
+    Параметры:
+    - `n` - число к которому применяется фильтр
+    - `mode` - режим работы фильтра:
+        - 0 - пропускает число без фильтрации
+        - 1 - пропускает только положительное число
+        - 2 - пропускает только отрицательное число
+        - другое - не пропускает никакое число
+
+    Возвращает:
+    - `n` - принятое число, если оно соответсвтует условию
+    - `0` - если оно не соответсвтует условию
+    '''
+    if mode == 0:
         return n
-    elif direction_code == 1:
+    elif mode == 1:
         if n > 0:
             return n
         else:
             return 0
-    elif direction_code == 2:
+    elif mode == 2:
         if n < 0:
             return n
         else:
             return 0
     else:
         return 0
+
+
+def rectInArea(rect, area):
+    offset = [0,0]
+    if rect.left < 0:
+        rect.left = 0
+    if rect.right > area[0]:
+        rect.right = area[0]
+    if rect.top < 0:
+        rect.top = 0
+    if rect.bottom > area[1]:
+        rect.bottom = area[1]
+    if rect.width > area[0]:
+        offset[0] = (rect.width - area[0]) // 2
+        rect.width = area[0]
+        rect.x = 0
+    if rect.height > area[1]:
+        offset[1] = (rect.height - area[1]) // 2
+        rect.height = area[1]
+        rect.y = 0
+    
+    return rect, offset
+
 
 
 def segmentIntersection(segment1, segment2):

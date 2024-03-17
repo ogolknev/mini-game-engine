@@ -6,7 +6,7 @@ import math
 import sys
 import os
 sys.path.insert(1, os.path.abspath(__file__) + "/../../..")
-from tools.math_tools import sign, blockFilter, absMax
+from tools.math_tools import sign, signFilter, absMax
 
 
 def calculatePath(sprite: pygame.sprite.Sprite, **kwargs):
@@ -38,7 +38,7 @@ def calculatePath(sprite: pygame.sprite.Sprite, **kwargs):
 
     sprite.path = [sprite.speed[0] * time, sprite.speed[1] * time]
 
-    sprite.animation("moving", tuple(move_direction))
+    sprite.animation(30, "moving", tuple(move_direction))
 
     return sprite.path
 
@@ -88,8 +88,8 @@ def standartMovement(entities: pygame.sprite.Group,
             if collisions:
                 collideHandle(entity, collisions)
 
-            entity.float_position[0] += blockFilter(steps[entity][0], entity.move_block[0])
-            entity.float_position[1] += blockFilter(steps[entity][1], entity.move_block[1])
+            entity.float_position[0] += signFilter(steps[entity][0], entity.move_block[0])
+            entity.float_position[1] += signFilter(steps[entity][1], entity.move_block[1])
 
             entity.rect.centerx = int(entity.float_position[0])
             entity.rect.centery = int(entity.float_position[1])
