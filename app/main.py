@@ -40,7 +40,7 @@ while run:
                   scale=scale
                   ) # рендер всех спрайтов
     
-    # main_surface.draw(window, settings["window"]["resolution"], observer, scale)
+
     window.blit(main_surface, (0,0))
     window.blit(font.render(str(int(clock.get_fps())) + " fps", True, (0,0,0), (200,200,200)), (0, 0)) # отображение debug панели
 

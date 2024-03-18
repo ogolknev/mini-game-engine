@@ -46,25 +46,25 @@ border_bottom = Sprite((50, 1000 + 50), clock, None, None, border_horizontal_tex
 border_left = Sprite((0, 50), clock, None, None, border_vertical_texture, entities)
 border_right = Sprite((1000 + 50, 50), clock, None, None, border_vertical_texture, entities)
 
-player_spritesheet = getSpriteSheet(os.path.abspath(__file__) + "/../static/textures/spritesheets/spritesheet_man.png")
+player_spritesheet = getSpriteSheet(os.path.abspath(__file__) + "/../static/textures/spritesheets/spritesheet_man.png", scale=2)
 obstacle_texture = pygame.Surface((randint(5, 200), randint(5, 200)))
 obstacle_texture.fill((255,255,255))
 
 player = Entity((randint(50, 950), randint(50, 950)),
                 clock,
                 gameKeyController,
-                pygame.Rect(2,0,12,16),
+                pygame.Rect(4,0,24,32),
                 player_spritesheet,
                 None,
                 entities, moving_entities,
                 maxacceleration=500,
-                maxspeed=200)
+                maxspeed=500)
 
 for _ in range(10):
     creature = Entity((randint(50, 950), randint(50, 950)),
                       clock,
                       gameRandController,
-                      pygame.Rect(2,0,12,16),
+                      pygame.Rect(4,0,24,32),
                       player_spritesheet,
                       None,
                       entities, moving_entities,

@@ -42,6 +42,7 @@ class Group(pygame.sprite.Group):
             - `surface` - поверхность на которой отрисовываются объекты
             - остальные опциональны - не используются напрямую в `mini-game-engine`
         '''
+
         surface.fill((0,0,0))
         rendering_area_rect = pygame.Rect(0,0, resolution[0] / scale, resolution[1] / scale)
         rendering_area_rect.center = observer.rect.center
@@ -51,7 +52,7 @@ class Group(pygame.sprite.Group):
 
             if sprite.rect.colliderect(rendering_area_rect):
 
-                surface.blit(sprite.image, sprite.rect)
+                surface.blit(sprite.image, (sprite.rect.x - sprite.hitbox_position[0], sprite.rect.y - sprite.hitbox_position[1]))
 
         rendering_area_surf = pygame.transform.scale_by(surface.subsurface(rendering_area_rect), scale)
         surface.fill((0,0,0))
@@ -74,22 +75,23 @@ class Group(pygame.sprite.Group):
         return super().update(*args, **kwargs)
 
 
-def getSpriteSheet(path):
+def getSpriteSheet(path:str, size:int=16, scale:float=1):
 
-    spritesheet_image = pygame.image.load(path)
+    spritesheet_image = pygame.transform.scale_by(pygame.image.load(path), scale)
+    size *= scale
 
     spritesheet = {
-        "default":spritesheet_image.subsurface((0,0,16,16)),
+        "default":spritesheet_image.subsurface((0,0,size,size)),
         "moving":{
-            (0,0): [spritesheet_image.subsurface((0,0,16,16)),],
-            (0,-1): [spritesheet_image.subsurface((0,0,16,16)), spritesheet_image.subsurface((16,0,16,16))],
-            (1,-1): [spritesheet_image.subsurface((0,0,16,16)), spritesheet_image.subsurface((16,0,16,16))],
-            (1,0): [spritesheet_image.subsurface((0,0,16,16)), spritesheet_image.subsurface((16,0,16,16))],
-            (1,1): [spritesheet_image.subsurface((0,0,16,16)), spritesheet_image.subsurface((16,0,16,16))],
-            (0,1): [spritesheet_image.subsurface((0,0,16,16)), spritesheet_image.subsurface((16,0,16,16))],
-            (-1,1): [spritesheet_image.subsurface((0,0,16,16)), spritesheet_image.subsurface((16,0,16,16))],
-            (-1,0): [spritesheet_image.subsurface((0,0,16,16)), spritesheet_image.subsurface((16,0,16,16))],
-            (-1,-1): [spritesheet_image.subsurface((0,0,16,16)), spritesheet_image.subsurface((16,0,16,16))],
+            (0,0): [spritesheet_image.subsurface((0,0,size,size)),],
+            (0,-1): [spritesheet_image.subsurface((0,0,size,size)), spritesheet_image.subsurface((size,0,size,size))],
+            (1,-1): [spritesheet_image.subsurface((0,0,size,size)), spritesheet_image.subsurface((size,0,size,size))],
+            (1,0): [spritesheet_image.subsurface((0,0,size,size)), spritesheet_image.subsurface((size,0,size,size))],
+            (1,1): [spritesheet_image.subsurface((0,0,size,size)), spritesheet_image.subsurface((size,0,size,size))],
+            (0,1): [spritesheet_image.subsurface((0,0,size,size)), spritesheet_image.subsurface((size,0,size,size))],
+            (-1,1): [spritesheet_image.subsurface((0,0,size,size)), spritesheet_image.subsurface((size,0,size,size))],
+            (-1,0): [spritesheet_image.subsurface((0,0,size,size)), spritesheet_image.subsurface((size,0,size,size))],
+            (-1,-1): [spritesheet_image.subsurface((0,0,size,size)), spritesheet_image.subsurface((size,0,size,size))],
         }
     }
 
