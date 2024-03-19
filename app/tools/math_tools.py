@@ -86,22 +86,26 @@ def signFilter(n: float, mode: int):
 
 def rectInArea(rect, area):
     offset = [0,0]
-    if rect.left < 0:
-        rect.left = 0
-    if rect.right > area[0]:
-        rect.right = area[0]
-    if rect.top < 0:
-        rect.top = 0
-    if rect.bottom > area[1]:
-        rect.bottom = area[1]
-    if rect.width > area[0]:
-        offset[0] = (rect.width - area[0]) // 2
-        rect.width = area[0]
-        rect.x = 0
-    if rect.height > area[1]:
-        offset[1] = (rect.height - area[1]) // 2
-        rect.height = area[1]
-        rect.y = 0
+    if rect.left < area.left:
+        rect.width -= area.left - rect.left
+        offset[0] += area.left - rect.left
+        rect.left = area.left
+    if rect.right > area.right:
+        rect.width -= rect.right - area.right
+    if rect.top < area.top:
+        rect.height -= area.top - rect.top
+        offset[1] += area.top - rect.top
+        rect.top = area.top
+    if rect.bottom > area.bottom:
+        rect.height -= rect.bottom - area.bottom
+    # if rect.width > area[0]:
+    #     offset[0] = (rect.width - area[0]) // 2
+    #     rect.width = area[0]
+    #     rect.x = 0
+    # if rect.height > area[1]:
+    #     offset[1] = (rect.height - area[1]) // 2
+    #     rect.height = area[1]
+        # rect.y = 0
     
     return rect, offset
 

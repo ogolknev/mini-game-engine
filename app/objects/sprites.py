@@ -43,20 +43,33 @@ class Group(pygame.sprite.Group):
             - остальные опциональны - не используются напрямую в `mini-game-engine`
         '''
 
-        surface.fill((0,0,0))
-        rendering_area_rect = pygame.Rect(0,0, resolution[0] / scale, resolution[1] / scale)
-        rendering_area_rect.center = observer.rect.center
-        rendering_area_rect, offset = rectInArea(rendering_area_rect, (surface.get_width(), surface.get_height()))
+        # surface.fill((0,0,0))
+        # rendering_area_rect = pygame.Rect(0,0, resolution[0] / scale, resolution[1] / scale)
+        # rendering_area_rect.center = observer.rect.center
+        # rendering_area_rect, offset = rectInArea(rendering_area_rect, (surface.get_width(), surface.get_height()))
+
+        rendering_area_rect = pygame.Rect(0,0, resolution[0] / (scale * 1.5), resolution[1] / (scale * 1.5))
+        rendering_area_rect.center = observer.rect.centerx, observer.rect.centery
+        # rendering_area_rect, offset = rectInArea(rendering_area_rect, (surface.get_width(), surface.get_height()))
 
         for sprite in self.sprites():
 
             if sprite.rect.colliderect(rendering_area_rect):
 
-                surface.blit(sprite.image, (sprite.rect.x - sprite.hitbox_position[0], sprite.rect.y - sprite.hitbox_position[1]))
+                rect, offset = rectInArea(sprite.rect.copy(), rendering_area_rect)
+                image = pygame.transform.scale_by(sprite.image.subsurface((*offset, rect.width + sprite.hitbox_position[0] * 2, rect.height + sprite.hitbox_position[1] * 2)), scale)
 
-        rendering_area_surf = pygame.transform.scale_by(surface.subsurface(rendering_area_rect), scale)
-        surface.fill((0,0,0))
-        surface.blit(rendering_area_surf, (offset[0] * scale, offset[1] * scale))
+                rect.width *= scale
+                rect.height *= scale
+
+                rect.x = (rect.x - observer.rect.centerx) * scale + resolution[0] // 2
+                rect.y = (rect.y - observer.rect.centery) * scale + resolution[1] // 2
+
+                surface.blit(image, (rect.x - (sprite.hitbox_position[0] * scale), rect.y - (sprite.hitbox_position[1] * scale)))
+
+        # rendering_area_surf = pygame.transform.scale_by(surface.subsurface(rendering_area_rect), scale)
+        # surface.fill((0,0,0))
+        # surface.blit(rendering_area_surf, (offset[0] * scale, offset[1] * scale))
 
         
     

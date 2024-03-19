@@ -57,7 +57,7 @@ player = Entity((randint(50, 950), randint(50, 950)),
                 player_spritesheet,
                 None,
                 entities, moving_entities,
-                maxacceleration=500,
+                maxacceleration=1000,
                 maxspeed=500)
 
 for _ in range(10):

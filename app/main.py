@@ -34,14 +34,14 @@ while run:
                     pressed_keys=pressed_keys,
                     moving_entities=moving_entities) # обновление всех спрайтов
 
-    entities.draw(surface=main_surface,
+    entities.draw(surface=window,
                   resolution=settings["window"]["resolution"],
                   observer=observer,
                   scale=scale
                   ) # рендер всех спрайтов
     
 
-    window.blit(main_surface, (0,0))
+    # window.blit(main_surface, (0,0))
     window.blit(font.render(str(int(clock.get_fps())) + " fps", True, (0,0,0), (200,200,200)), (0, 0)) # отображение debug панели
 
     pygame.display.flip() # смена кадра

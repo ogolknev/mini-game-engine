@@ -38,7 +38,7 @@ def calculatePath(sprite: pygame.sprite.Sprite, **kwargs):
 
     sprite.path = [sprite.speed[0] * time, sprite.speed[1] * time]
 
-    sprite.animation(30, "moving", tuple(move_direction))
+    sprite.animation(20, "moving", tuple(move_direction))
 
     return sprite.path
 
