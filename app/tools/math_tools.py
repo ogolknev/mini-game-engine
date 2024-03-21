@@ -24,7 +24,7 @@ def nextIterible(iterible, index: float, time: int, speed: int) -> any:
     Параметры:
     - `iterible` - итерируемый объект, для которого проверяется должен ли смениться элемент
     - `index` - текущий `float` индекс
-    - `time` - время с предидущего вызова
+    - `time` - время с предыдущего вызова
     - `speed` - скорость (элементы/секунду) с которой сменяются элементы итерируемого объекта
 
     Возвращает:
@@ -85,6 +85,17 @@ def signFilter(n: float, mode: int):
 
 
 def rectInArea(rect, area):
+    '''
+    Находит часть `rect`, которая накладывается на `area`, и отступ `offset` необходимый для обрезания текстуры объекта,
+    которому принадлежит `rect`.
+    
+    Принимает:
+    - `rect` - прямоугольник (pygame.Rect) для которого находится область наложения на `area`
+    - `area` - прямоугольник (pygame.Rect) используемый для нахождения части `rect`
+
+    Возвращает:
+    - `rect` -  область наложения параметра `rect` на `area`
+    '''
     offset = [0,0]
     if rect.left < area.left:
         rect.width -= area.left - rect.left
@@ -97,18 +108,8 @@ def rectInArea(rect, area):
         offset[1] += area.top - rect.top
         rect.top = area.top
     if rect.bottom > area.bottom:
-        rect.height -= rect.bottom - area.bottom
-    # if rect.width > area[0]:
-    #     offset[0] = (rect.width - area[0]) // 2
-    #     rect.width = area[0]
-    #     rect.x = 0
-    # if rect.height > area[1]:
-    #     offset[1] = (rect.height - area[1]) // 2
-    #     rect.height = area[1]
-        # rect.y = 0
-    
+        rect.height -= rect.bottom - area.bottom 
     return rect, offset
-
 
 
 def segmentIntersection(segment1, segment2):

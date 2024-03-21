@@ -7,7 +7,7 @@ import sys
 import os
 sys.path.insert(1, os.path.abspath(__file__) + "/../..")
 from objects.behavior.movement import standartMovement
-from tools.math_tools import nextIterible, signFilter, rectInArea
+from tools.math_tools import nextIterible, rectInArea
 
 class Group(pygame.sprite.Group):
     '''
@@ -32,25 +32,19 @@ class Group(pygame.sprite.Group):
         super().__init__(*sprites)
 
 
-    def draw(self, surface: pygame.surface.Surface, resolution, observer, scale, **kwargs):
+    def draw(self, surface: pygame.surface.Surface, resolution, observer, scale):
         '''
-        Отрисовывает объекты группы на переданной поверхности, к которым применяются
-        функции `observer` (закрепление камеры за объектом) и `scale` (приближение и отдаление камеры).
+        Отрисовывает объекты группы на переданной поверхности, в пределах области отрисовки (102% разрешения окна)
 
         Параметры:
-        - стандартные параметры метода `pygame.sprite.Group.draw()`:
-            - `surface` - поверхность на которой отрисовываются объекты
-            - остальные опциональны - не используются напрямую в `mini-game-engine`
+        - `surface` - поверхность на которой происходит отрисовка
+        - `resolution` - разрешение главного окна
+        - `observer` - объект за которым закреплена камера
+        - `scale` - коэффициент приближения камеры
         '''
 
-        # surface.fill((0,0,0))
-        # rendering_area_rect = pygame.Rect(0,0, resolution[0] / scale, resolution[1] / scale)
-        # rendering_area_rect.center = observer.rect.center
-        # rendering_area_rect, offset = rectInArea(rendering_area_rect, (surface.get_width(), surface.get_height()))
-
-        rendering_area_rect = pygame.Rect(0,0, resolution[0] / (scale * 1.5), resolution[1] / (scale * 1.5))
+        rendering_area_rect = pygame.Rect(0,0, resolution[0] / (scale * 0.98), resolution[1] / (scale * 0.98))
         rendering_area_rect.center = observer.rect.centerx, observer.rect.centery
-        # rendering_area_rect, offset = rectInArea(rendering_area_rect, (surface.get_width(), surface.get_height()))
 
         for sprite in self.sprites():
 
@@ -66,15 +60,10 @@ class Group(pygame.sprite.Group):
                 rect.y = (rect.y - observer.rect.centery) * scale + resolution[1] // 2
 
                 surface.blit(image, (rect.x - (sprite.hitbox_position[0] * scale), rect.y - (sprite.hitbox_position[1] * scale)))
-
-        # rendering_area_surf = pygame.transform.scale_by(surface.subsurface(rendering_area_rect), scale)
-        # surface.fill((0,0,0))
-        # surface.blit(rendering_area_surf, (offset[0] * scale, offset[1] * scale))
-
-        
+    
     
 
-    def update(self, *args, **kwargs):
+    def update(self, moving_entities: pygame.sprite.Group, *args, **kwargs):
         '''
         Обновляет свойства объектов между кадрами в соответсвии с описанным поведением
         в методе `update()` элементов группы и функцией движения.
@@ -83,32 +72,9 @@ class Group(pygame.sprite.Group):
         - параметры необходимые методам `update()` объектов группы и функции движения
         '''
 
-        standartMovement(self, *args, **kwargs)
+        standartMovement(self, moving_entities, *args, **kwargs)
 
         return super().update(*args, **kwargs)
-
-
-def getSpriteSheet(path:str, size:int=16, scale:float=1):
-
-    spritesheet_image = pygame.transform.scale_by(pygame.image.load(path), scale)
-    size *= scale
-
-    spritesheet = {
-        "default":spritesheet_image.subsurface((0,0,size,size)),
-        "moving":{
-            (0,0): [spritesheet_image.subsurface((0,0,size,size)),],
-            (0,-1): [spritesheet_image.subsurface((0,0,size,size)), spritesheet_image.subsurface((size,0,size,size))],
-            (1,-1): [spritesheet_image.subsurface((0,0,size,size)), spritesheet_image.subsurface((size,0,size,size))],
-            (1,0): [spritesheet_image.subsurface((0,0,size,size)), spritesheet_image.subsurface((size,0,size,size))],
-            (1,1): [spritesheet_image.subsurface((0,0,size,size)), spritesheet_image.subsurface((size,0,size,size))],
-            (0,1): [spritesheet_image.subsurface((0,0,size,size)), spritesheet_image.subsurface((size,0,size,size))],
-            (-1,1): [spritesheet_image.subsurface((0,0,size,size)), spritesheet_image.subsurface((size,0,size,size))],
-            (-1,0): [spritesheet_image.subsurface((0,0,size,size)), spritesheet_image.subsurface((size,0,size,size))],
-            (-1,-1): [spritesheet_image.subsurface((0,0,size,size)), spritesheet_image.subsurface((size,0,size,size))],
-        }
-    }
-
-    return spritesheet
 
 
 class Sprite(pygame.sprite.Sprite):
@@ -231,7 +197,7 @@ class Entity(Sprite):
     def animation(self, speed, mode=None, *args):
 
         '''
-        Сменяет кадры в анимации.
+        Сменяет кадры в анимации сущности.
 
         Параметры:
         - `mode` - название типа анимации в `self.spritesheet`

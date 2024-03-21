@@ -10,6 +10,19 @@ from tools.math_tools import sign, signFilter, absMax
 
 
 def calculatePath(sprite: pygame.sprite.Sprite, **kwargs):
+    '''
+    !!! ФУНКЦИЮ НЕОБХОДИМО ПЕРЕПИСАТЬ !!! (Разделить на более мелкие и абстрактные функции)
+
+    Расчитывает путь объекта, который он попытается пройти за 1 кадр и обновляет атрибут `sprite.path`.
+    Расчитывает скорость в начале текущего кадра и обновляет `sprite.speed`. Вызывает метод анимации спрайта.
+
+    Принимает:
+    - `sprite` - объект для которого выполняются расчеты и вызывается метод анимации
+    - `kwargs` - кей-ворд параметры передаваемые контроллеру объекта
+
+    Возвращает:
+    - `sprite.path` - путь объекта, который он попытается пройти за 1 кадр
+    '''
 
     # Извлечение необходимых аттрибутов из объекта
     maxacceleration = sprite.kwattrs["maxacceleration"]
@@ -43,17 +56,19 @@ def calculatePath(sprite: pygame.sprite.Sprite, **kwargs):
     return sprite.path
 
 
-def calculateEntitiesPaths(**kwargs):
+def calculateEntitiesPaths(moving_entities: pygame.sprite.Group, **kwargs):
     '''
-    Принимает:
-    - `group` - группа сущностей для которых вычисляются пути (смещения между текущим и следующим кадром)
-    - `kwargs` - дополнительные аргументы
-
     Вычисляет путь для каждой сущности из группы. Возвращает список всех компонентов (горизонатльный/вертикальный путь)
     всех вычесленных путей.
+
+    Принимает:
+    - `moving_entities` - группа сущностей для которых вычисляются пути (смещения между текущим и следующим кадром)
+    - `kwargs` - дополнительные параметры нужные для calculatePath()
+
+    Возвращает:
+    - `paths` - список всех компонентов (горизонатльный/вертикальный путь) всех вычесленных путей
     '''
 
-    moving_entities = kwargs["moving_entities"]
     paths = []
 
     for sprite in moving_entities.sprites():
@@ -62,13 +77,21 @@ def calculateEntitiesPaths(**kwargs):
     return paths
 
 
-def standartMovement(entities: pygame.sprite.Group,
-                     **kwargs):
+def standartMovement(entities: pygame.sprite.Group, moving_entities: pygame.sprite.Group, **kwargs):
+    '''
+    Основная функция реализующая движение объектов через их контроллеры и максимальную скорость/ускорение.
+
+    Суть текущей реализации: Вычисляются пути всех объектов. Они делятся на одинаковое колличество шагов такое,
+    что максимальный шаг объекта был не больше 1 пикселя (при scale=1.0). Потом путь проходится всеми объектами пошагово,
+    проверяя столкновения на каждом шаге.
     
+    Принимает:
+    - `entities` - группа (pygame.sprite.Group) объектов для которой реализуется движение
+    - `moving_entities` - группа (pygame.sprite.Group) объектов способных двигаться
+    - `kwargs` - кей-ворд параметры для calculateEntitiesPaths()
+    '''
 
-    moving_entities = kwargs["moving_entities"]
-
-    steps_num = math.ceil(absMax(calculateEntitiesPaths(**kwargs)))
+    steps_num = math.ceil(absMax(calculateEntitiesPaths(moving_entities, **kwargs)))
 
     if not steps_num: return 0
 
@@ -99,12 +122,14 @@ def standartMovement(entities: pygame.sprite.Group,
 
 def collideHandle(sprite: pygame.sprite.Sprite, collisions):
     '''
+    !!! ДОПИСАТЬ !!! `diff` определяется неверно
+    
+    Определяет направления заблокированные для движения `move_block`. Обновляет `sprite.move_block`.
+    Перед использованием заблокированные направления должны быть сброшены (move_block = [0,0]).
+    
     Принимает:
     - `sprite` - объект для которого определяются блокировки
     - `collisions` - список объектов с которыми он столкнулся
-
-    Определяет направления `move_block` заблокированные для движения.
-    Перед использованием заблокированные направления должны быть сброшены.
     '''
 
     for collided in collisions:

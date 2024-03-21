@@ -8,13 +8,26 @@ import os
 sys.path.insert(1, os.path.abspath(__file__) + "/../../../..")
 
 
-def appKeyController(pressed_keys: pygame.key.ScancodeWrapper, **kwargs):
+def appKeyController(pressed_keys: pygame.key.ScancodeWrapper,
+                     settings: dict,
+                     run: bool,
+                     scale: float,
+                     clock: pygame.time.Clock):
     '''
+    Контроллер управляющий основными настройками приложения с помощью клавиатуры.
+
+    Принимает:
+    - `pressed_keys` - объект pygame (pygame.key.ScancodeWrapper), содержащий состояние всех клавиш
+    - `settings` - словарь содержащий настройки приложения
+    - `run` - переключатель отвечающий за работу приложения
+    - `scale` - коэффициент приближения камеры
+    - `clock` - объект pygame для отслеживания времени
+
+    Возвращает:
+    - `settings` - обработанный словарь содержащий настройки приложения
+    - `run` - обработанный переключатель отвечающий за работу приложения
+    - `scale` - обработанный коэффициент приближения камеры
     '''
-    settings = kwargs["settings"]
-    scale = kwargs["scale"]
-    scale_clock = kwargs["clock"]
-    run = kwargs["run"]
     key_controls = settings["key_controls"]
     
 
@@ -26,17 +39,30 @@ def appKeyController(pressed_keys: pygame.key.ScancodeWrapper, **kwargs):
         run = False and run
 
     if pressed_keys[key_controls["scale_up"]]:
-        scale += 2 * 0.001 * scale_clock.get_time()
-        if scale > 5: scale = 5
+        scale += 2 * 0.001 * clock.get_time()
+        if scale > 5: scale = 5.0
     if pressed_keys[key_controls["scale_down"]]:
-        scale -= 2 * 0.001 * scale_clock.get_time()
+        scale -= 2 * 0.001 * clock.get_time()
         if scale < 0.2: scale = 0.2
 
 
-    return settings, scale, run
+    return settings, run, scale
 
 
 def gameKeyController(**kwargs):
+    '''
+    Контроллер управляющий движением сущностей внутри приложения с помощью клавиатуры.
+    Определяет направление движения сущности, в соответсвии нажатым клавишам.
+
+    Принимает:
+    - `kwargs` - кей-ворд параметры:
+        - `settings` - словарь содержащий настройки приложения
+        - `pressed_keys` - объект pygame (pygame.key.ScancodeWrapper), содержащий состояние всех клавиш
+
+    Возвращает:
+    - `move_direction` - список из двух направлений [по горизонтали, по вертикали]
+    (`1` - в сторону увеличения координаты, `-1` - наоборот, 0 - нет движения)
+    '''
 
     settings = kwargs["settings"]
     pressed_keys = kwargs["pressed_keys"]
@@ -56,6 +82,18 @@ def gameKeyController(**kwargs):
 
 
 def gameRandController(**kwargs):
+    '''
+    Контроллер управляющий движением сущностей внутри приложения.
+    Случайно определяет направление движения сущности.
+
+    Принимает:
+    - `kwargs` - кей-ворд параметры:
+        - `sprite` - сущность для которой определяется направление движения
+
+    Возвращает:
+    - `move_direction` - список из двух направлений [по горизонтали, по вертикали]
+    (`1` - в сторону увеличения координаты, `-1` - наоборот, 0 - нет движения)
+    '''
 
     sprite = kwargs["sprite"]
 

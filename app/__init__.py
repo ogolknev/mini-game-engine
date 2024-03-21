@@ -3,31 +3,25 @@
 '''
 import pygame
 import os
-from tools.load_tools import loadJson
-from objects.sprites import Entity, Sprite, Group, getSpriteSheet
+from tools.load_tools import loadJson, getSpriteSheet
+from objects.sprites import Entity, Sprite, Group
 from objects.behavior.controllers import gameKeyController, appKeyController, gameRandController
 from random import randint
 
 settings = loadJson(os.path.abspath(__file__) + "/../data/settings.json") # словарь содержащий текущие настройки
 
-window = pygame.display.set_mode(settings["window"]["resolution"]) # главная поверхность
+window = pygame.display.set_mode(settings["window"]["resolution"]) # главная поверхность (окно)
 pygame.display.set_caption(settings["window"]["caption"]) # установка загаловка окна
 resolution_modes = pygame.display.list_modes() # список доступных разрешений
-
-# ingame_surface = pygame.Surface((5000,5000))
-# cropped_ingame_surface = pygame.Surface(settings["window"]["resolution"])
-# ingame_surface = SuperSurface((3000, 3000))
-# main_surface = GroupSingle(ingame_surface)
 
 clock = pygame.time.Clock() # объект pygame для отслеживания времени
 fps = settings["window"]["fps"] # ограничение fps
 
-run = True # переключатель работы приложения
+run = True # переключатель отвечающий за работу приложения
 
 scale = 1.0 # значение приближения
 
 observer = None # объект за которым следит камера
-main_surface = pygame.surface.Surface((1100,1100))
 
 
 # дальше инициализация конкретного уровня
@@ -57,8 +51,8 @@ player = Entity((randint(50, 950), randint(50, 950)),
                 player_spritesheet,
                 None,
                 entities, moving_entities,
-                maxacceleration=1000,
-                maxspeed=500)
+                maxacceleration=10000,
+                maxspeed=100)
 
 for _ in range(10):
     creature = Entity((randint(50, 950), randint(50, 950)),
