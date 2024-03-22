@@ -5,7 +5,7 @@ import pygame
 import sys
 import os
 sys.path.insert(1, os.path.abspath(__file__) + "/../..")
-from app import (window, run, entities, moving_entities, settings, clock,
+from init import (window, run, entities, moving_entities, settings, clock,
                  fps, font, scale, observer, appKeyController)
 
 # главный цикл
