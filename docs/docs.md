@@ -2,23 +2,21 @@
 
 ## Содержание
 
-- [Документация](#документация)
-  - [Содержание](#содержание)
-  - [`main`](#main)
-  - [`init`](#init)
-  - [`data/`](#data)
-    - [`data/settings`](#datasettings)
-  - [`objects`](#objects)
-    - [`objects.behavior`](#objectsbehavior)
-      - [`objects.behavior.controllers`](#objectsbehaviorcontrollers)
-      - [`objects.behavior.movement`](#objectsbehaviormovement)
-    - [`objects.sprites`](#objectssprites)
-  - [`static/`](#static)
-    - [`static/textures/`](#statictextures)
-      - [`static/textures/spritesheets/`](#statictexturesspritesheets)
-  - [`tools`](#tools)
-    - [`tools.load_tools`](#toolsload_tools)
-    - [`tools.math_tools`](#toolsmath_tools)
+- [`main`](#main)
+- [`init`](#init)
+- [`data/`](#data)
+- [`data/settings`](#datasettings)
+- [`objects`](#objects)
+- [`objects.behavior`](#objectsbehavior)
+    - [`objects.behavior.controllers`](#objectsbehaviorcontrollers)
+    - [`objects.behavior.movement`](#objectsbehaviormovement)
+- [`objects.sprites`](#objectssprites)
+- [`static/`](#static)
+- [`static/textures/`](#statictextures)
+    - [`static/textures/spritesheets/`](#statictexturesspritesheets)
+- [`tools`](#tools)
+- [`tools.load_tools`](#toolsload_tools)
+- [`tools.math_tools`](#toolsmath_tools)
 
 ## `main`
 
