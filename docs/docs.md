@@ -2,21 +2,23 @@
 
 ## Содержание
 
-- [`main`](#main)
-- [`__init__`](#__init__)
-- [`data/`](#data)
-  - [`data/settings`](#datasettings)
-- [`objects`](#objects)
-  - [`objects.behavior`](#objectsbehavior)
-    - [`objects.behavior.controllers`](#objectsbehaviorcontrollers)
-    - [`objects.behavior.movement`](#objectsbehaviormovement)
-  - [`objects.sprites`](#objectssprites)
-- [`static/`](#static)
-  - [`static/textures/`](#statictextures)
-    - [`static/textures/spritesheets/`](#statictexturesspritesheets)
-- [`tools`](#tools)
-  - [`tools.load_tools`](#toolsload_tools)
-  - [`tools.math_tools`](#toolsmath_tools)
+- [Документация](#документация)
+  - [Содержание](#содержание)
+  - [`main`](#main)
+  - [`init`](#init)
+  - [`data/`](#data)
+    - [`data/settings`](#datasettings)
+  - [`objects`](#objects)
+    - [`objects.behavior`](#objectsbehavior)
+      - [`objects.behavior.controllers`](#objectsbehaviorcontrollers)
+      - [`objects.behavior.movement`](#objectsbehaviormovement)
+    - [`objects.sprites`](#objectssprites)
+  - [`static/`](#static)
+    - [`static/textures/`](#statictextures)
+      - [`static/textures/spritesheets/`](#statictexturesspritesheets)
+  - [`tools`](#tools)
+    - [`tools.load_tools`](#toolsload_tools)
+    - [`tools.math_tools`](#toolsmath_tools)
 
 ## `main`
 
@@ -29,9 +31,9 @@ while run:
   # основной цикл
 ```
 
-## `__init__`
+## `init`
 
-Файл определяющий корневую папку `app` как пакет модулей. В нем описана инициализация всех основных сущностей.
+Инициализация всех основных сущностей.
 
 ## `data/`
 
