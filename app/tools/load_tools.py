@@ -13,6 +13,17 @@ def loadJson(path: str) -> dict:
 
 
 def getSpriteSheet(path:str, size:int=16, scale:float=1):
+    '''
+    Возвращает словарь содержащий кадры всех анимаций спрайта
+    
+    Принимает:
+    - `path` - путь к изображению таблицы спрайтов
+    - `size` - размер одного кадра
+    - `scale` - множитель размера кадров
+
+    Возвращает:
+    - `spritesheet` - итоговый словарь с кадрами
+    '''
 
     spritesheet_image = pygame.transform.scale_by(pygame.image.load(path), scale)
     size *= scale

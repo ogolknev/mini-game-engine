@@ -19,7 +19,7 @@ class Group(pygame.sprite.Group):
     - стандартные атрибуты `pygame.sprite.Group`
     '''
 
-    def __init__(self, *sprites) -> None:
+    def __init__(self, *sprites):
         '''
         Станадртный класс `pygame.sprite.Group` с измененными методами:
         - `draw` - в нем реализованны функции `observer` (закрепление камеры за объектом) и `scale` (приближение и отдаление камеры)
@@ -62,7 +62,6 @@ class Group(pygame.sprite.Group):
                 surface.blit(image, (rect.x - (sprite.hitbox_position[0] * scale), rect.y - (sprite.hitbox_position[1] * scale)))
     
     
-
     def update(self, moving_entities: pygame.sprite.Group, *args, **kwargs):
         '''
         Обновляет свойства объектов между кадрами в соответсвии с описанным поведением
@@ -194,7 +193,7 @@ class Entity(Sprite):
         Обновляет свойства объекта между кадрами.
         '''
 
-    def animation(self, speed, mode=None, *args):
+    def animation(self, speed, mode, *args):
 
         '''
         Сменяет кадры в анимации сущности.

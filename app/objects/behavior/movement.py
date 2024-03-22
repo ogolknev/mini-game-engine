@@ -93,7 +93,7 @@ def standartMovement(entities: pygame.sprite.Group, moving_entities: pygame.spri
 
     steps_num = math.ceil(absMax(calculateEntitiesPaths(moving_entities, **kwargs)))
 
-    if not steps_num: return 0
+    if not steps_num: return None
 
     steps = {}
     for entity in moving_entities:
